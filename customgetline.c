@@ -7,29 +7,36 @@
 
 char *customGetLine(void)
 {
-	char *userInput = NULL;
-	size_t inputSize = 0;
 	ssize_t bytesRead;
+	char *buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+	size_t buffer_size;
 
-	bytesRead = getline(&userInput, &inputSize, stdin);
+	if (buffer == NULL)
+	{
+		perror("Error: ");
+		return (NULL);
+	}
+
+	buffer_size = BUFFER_SIZE;
+	bytesRead = getline(&buffer, &buffer_size, stdin);
 
 	if (bytesRead == -1)
 	{
 		perror("Error: ");
-		free(userInput);
+		free(buffer);
 		return (NULL);
 	}
 
 	if (bytesRead == 1)
 	{
-		free(userInput);
+		free(buffer);
 		return ("");
 	}
 
-	if (userInput[bytesRead - 1] == '\n')
+	if (buffer[bytesRead - 1] == '\n')
 	{
-		userInput[bytesRead - 1] = '\0';
+		buffer[bytesRead - 1] = '\0';
 	}
 
-	return (userInput);
+	return (buffer);
 }
