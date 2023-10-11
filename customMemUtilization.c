@@ -12,8 +12,9 @@ void *custom_memcpy(void *dst, const void *src, size_t n)
 {
 	char *dest = dst;
 	const char *source = src;
+	size_t i;
 
-	for (size_t i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		dest[i] = source[i];
 	}
