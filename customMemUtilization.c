@@ -48,3 +48,45 @@ void *custom_realloc(void *ptr, size_t size)
 
 	return (new_ptr);
 }
+
+/**
+* custom_strdup - this duplicates a string
+* @input_str: this is the input string to duplicate
+* Return: the new string
+*/
+
+char *custom_strdup(const char *input_str)
+{
+	char *new_str = malloc(customStringLength(input_str) + 1);
+
+	if (input_str == NULL)
+		return (NULL);
+
+	if (new_str != NULL)
+		customStringCopy(new_str, input_str);
+
+	return (new_str);
+}
+
+/**
+* custom_strcat - this concatenates two strings
+* @destination: the destination string to append to
+* @source: the source string to append to the destination
+* Return: a pointer ti the concatenated string
+*/
+
+char *custom_strcat(char *destination, const char *source)
+{
+	char *p = destination + customStringLength(destination);
+
+	if (destination == NULL || source == NULL)
+		return (destination);
+
+	while (*source != '\0')
+	{
+		*p++ = *source++;
+	}
+	*p = '\0';
+
+	return (destination);
+}

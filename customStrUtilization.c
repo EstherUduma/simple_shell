@@ -41,19 +41,40 @@ int customStringLength(const char *str)
 * to a destination
 * @destination: the destination sting
 * @source: the source string
-* @size: number of characters to copy
 * Return: The number of characters copied
 */
 
-int customStringCopy(char *destination, const char *source, int size)
+int customStringCopy(char *destination, const char *source)
 {
-	int i;
+	int count;
 
-	for (i = 0; i < size && source[i] != '\0'; i++)
+	for (count = 0; source[count] != '\0'; count++)
 	{
-		destination[i] = source[i];
+		destination[count] = source[count];
 	}
-	destination[i] =  '\0';
+	destination[count] =  '\0';
 
-	return (i);
+	return (count);
+}
+
+/**
+* custom_strncmp - this compares 2 strings up to a specified size
+* @s1: string 1
+* @s2: string 2
+* @n: size
+* Return: 0 if equal, +ve if s1 is > and -ve if s2 is >
+*/
+
+int custom_strncmp(const char *s1, const char *s2, size_t  n)
+{
+	size_t i;
+
+	for (i = 0; i < n; i++)
+	{
+		if (s1[i] != s2[i] || s1[i] '\0' || s2[i] == '\0')
+		{
+			return (s1[i] - s2[i]);
+		}
+	}
+	return (0);
 }
