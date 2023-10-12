@@ -9,8 +9,8 @@ char *customGetLine(void)
 {
 	ssize_t bytesRead;
 	char c;
-	char *buffer = (char *)malloc(sizeof(char) * buffer_size);
 	size_t buffer_size = BUFFER_SIZE;
+	char *buffer = (char *)malloc(sizeof(char) * buffer_size);
 	size_t buffer_index;
 
 	if (buffer == NULL)
@@ -35,7 +35,7 @@ char *customGetLine(void)
 		buffer_index++;
 		if (buffer_index >= BUFFER_SIZE)
 		{
-			char *newBuffer = (char *)realloc(buffer, sizeof(char) * (bufferSize +
+			char *newBuffer = (char *)realloc(buffer, sizeof(char) * (buffer_size +
 			BUFFER_SIZE));
 
 			if (newBuffer == NULL)
@@ -44,7 +44,7 @@ char *customGetLine(void)
 				return (NULL);
 			}
 			buffer = newBuffer;
-			bufferSize += BUFFER_SIZE;
+			buffer_size += BUFFER_SIZE;
 		}
 	}
 }

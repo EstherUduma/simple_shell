@@ -57,13 +57,19 @@ void *custom_realloc(void *ptr, size_t size)
 
 char *custom_strdup(const char *input_str)
 {
-	char *new_str = malloc(customStringLength(input_str) + 1);
+	char *new_str;
 
 	if (input_str == NULL)
+	{
 		return (NULL);
+	}
+
+	new_str = malloc(customStringLength(input_str) + 1);
 
 	if (new_str != NULL)
+	{
 		customStringCopy(new_str, input_str);
+	}
 
 	return (new_str);
 }
