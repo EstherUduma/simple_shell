@@ -9,6 +9,7 @@ int main(void)
 {
 	char *userInput;
 	char prompt[] = "$ ";
+	char *full_path;
 
 	while (1)
 	{
@@ -25,7 +26,14 @@ int main(void)
 
 		if (userInput[0] != '\0' && customStringCompare(userInput, "\n") != 0)
 		{
-			write(STDOUT_FILENO, userInput, customStringLength(userInput));
+			full_path = customWhich(userInput);
+
+			if (full_path != NULL)
+			{
+				write(STDOUT_FILENO, full_path, customStringLength(full_path));
+				write(STDOUT_FILENO, "\n", 1);
+				free(full_path);
+			}
 		}
 
 		free(userInput);

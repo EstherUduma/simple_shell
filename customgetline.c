@@ -8,35 +8,43 @@
 char *customGetLine(void)
 {
 	ssize_t bytesRead;
-	char *buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-	size_t buffer_size;
+	char c;
+	char *buffer = (char *)malloc(sizeof(char) * buffer_size);
+	size_t buffer_size = BUFFER_SIZE;
+	size_t buffer_index;
 
 	if (buffer == NULL)
 	{
 		perror("Error: ");
 		return (NULL);
 	}
-
-	buffer_size = BUFFER_SIZE;
-	bytesRead = getline(&buffer, &buffer_size, stdin);
-
-	if (bytesRead == -1)
+	while (1)
 	{
-		perror("Error: ");
-		free(buffer);
-		return (NULL);
-	}
+		bytesRead = read(STDIN_FILENO, &c, 1);
+		if (bytesRead == 0 || c == EOF || c == '\n')
+		{
+			if (buffer_index == 0)
+			{
+				free(buffer);
+				return ("");
+			}
+			buffer[buffer_index] = '\0';
+			return (buffer);
+		}
+		buffer[buffer_index] = c;
+		buffer_index++;
+		if (buffer_index >= BUFFER_SIZE)
+		{
+			char *newBuffer = (char *)realloc(buffer, sizeof(char) * (bufferSize +
+			BUFFER_SIZE));
 
-	if (bytesRead == 1)
-	{
-		free(buffer);
-		return ("");
+			if (newBuffer == NULL)
+			{
+				free(buffer);
+				return (NULL);
+			}
+			buffer = newBuffer;
+			bufferSize += BUFFER_SIZE;
+		}
 	}
-
-	if (buffer[bytesRead - 1] == '\n')
-	{
-		buffer[bytesRead - 1] = '\0';
-	}
-
-	return (buffer);
 }
