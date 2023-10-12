@@ -1,15 +1,12 @@
 #include "shell.h"
 
 /**
-* main - the entry point of the program
-* Return: 0
+* processUserInput - process user input
 */
 
-int main(void)
+void processUserInput(void)
 {
-	char *userInput;
-	char prompt[] = "$ ";
-	char *full_path;
+	char *userInput, prompt[] = "$ ", *full_path;
 
 	while (1)
 	{
@@ -23,6 +20,8 @@ int main(void)
 		{
 			exit(EXIT_SUCCESS);
 		}
+
+		trimTrailingSpaces(userInput);
 
 		if (userInput[0] != '\0' && customStringCompare(userInput, "\n") != 0)
 		{
@@ -38,6 +37,42 @@ int main(void)
 
 		free(userInput);
 	}
+}
+
+/**
+* handleAliases - handle alias related commands
+*/
+
+void handleAliases(void)
+{
+	char *cmd, *argv[MAX_ARGS], num_arg;
+
+	do {
+		if (isatty(STDIN_FILENO))
+		{
+			write(1, "$ ", 2);
+		}
+		cmd = customGetLine();
+		trimTrailingSpaces(cmd);
+		if (cmd == NULL)
+		{
+			exit(EXIT_SUCCESS);
+		}
+		splitIntoArgs(cmd, argv);
+		num_arg = num_args(argv);
+		alias_command(argv, num_arg);
+		free(cmd);
+	} while (1);
+}
+
+/**
+* main - the entry point of the program
+* Return: (0)
+*/
+
+int main(void)
+{
+	processUserInput();
 
 	return (0);
 }
