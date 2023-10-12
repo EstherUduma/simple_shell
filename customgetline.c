@@ -8,9 +8,8 @@
 char *customGetLine(void)
 {
 	ssize_t bytesRead;
-	char c;
 	size_t buffer_size = BUFFER_SIZE;
-	char *buffer = (char *)malloc(sizeof(char) * buffer_size);
+	char c, *buffer = (char *)malloc(sizeof(char) * buffer_size);
 	size_t buffer_index;
 
 	if (buffer == NULL)
@@ -45,6 +44,40 @@ char *customGetLine(void)
 			}
 			buffer = newBuffer;
 			buffer_size += BUFFER_SIZE;
+		}
+		handleHashHelper(buffer + buffer_index, &buffer_index);
+	}
+}
+
+/**
+* handleHashHelper - function helps the handleHash function in customGetLin
+* @buffer: pointer to the buffer to check the process
+* @buffer_index: pointer to the current index within the buffer
+*/
+
+void handleHashHelper(char *buffer, size_t *buffer_index)
+{
+	if (*buffer == '#')
+	{
+		handleHash(buffer);
+		*buffer_index = 0;
+	}
+}
+
+/**
+* handleHash - this function replaces the characters after '#'
+* with a null terminatior
+* @text: the input string to process
+*/
+
+void handleHash(char *text)
+{
+	for (i = 0; text[i] != '\0'; i++)
+	{
+		if (text[i] == '#')
+		{
+			text[i] = '\0';
+			break;
 		}
 	}
 }

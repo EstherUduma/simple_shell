@@ -9,7 +9,7 @@
 
 char *customStrtok(char *str, const char *delim)
 {
-	static char *currentToken;
+	static char *currentToken = NULL;
 	char *token = currentToken;
 
 	if (str != NULL)
