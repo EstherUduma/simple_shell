@@ -38,5 +38,16 @@ int defineAlias(char *aliasName, char *aliasCmd);
 int processAliasCmd(char *args[MAX_ARGS], int numArgs __attribute__((unused)));
 void processUserInput(void);
 void handleAliases(void);
+int bfree(void **ptr);
+char *_strchr(char *s, char c);
+char *_strncat(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, int n);
+int _atoi(char *s);
+int _isalpha(int c);
+int is_delim(char c, char *delim);
+int interactive(info_t *info);
+char *find_path(info_t *info, char *pathstr, char *cmd);
+char *dup_chars(char *pathstr, int start, int stop);
+int is_cmd(info_t *info, char *path);
 
 #endif
