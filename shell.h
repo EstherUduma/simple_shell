@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 #define BUFFER_SIZE 1024
+#define MAX_ARGS 100
 
 extern char **environ;
 
@@ -25,5 +26,17 @@ char *custom_strdup(const char *input_str);
 char *custom_strcat(char *destination, const char *source);
 int custom_strncmp(const char *s1, const char *s2, size_t n);
 char *customWhich(const char *command);
+void trimTrailingSpaces(char *inputStr);
+void splitIntoArgs(char *inputCommand, char *args[MAX_ARGS]);
+int countArguments(char *args[]);
+int customHasEqualSign(char *text);
+void handleHashHelper(char *buffer, size_t *buffer_index);
+void handleHash(char *text);
+ssize_t _write(int fd, const void *buf, size_t count);
+void listAlises(void);
+int defineAlias(char *aliasName, char *aliasCmd);
+int processAliasCmd(char *args[MAX_ARGS], int numArgs __attribute__((unused)));
+void processUserInput(void);
+void handleAliases(void);
 
 #endif

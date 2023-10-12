@@ -72,6 +72,8 @@ void handleHashHelper(char *buffer, size_t *buffer_index)
 
 void handleHash(char *text)
 {
+	int i;
+
 	for (i = 0; text[i] != '\0'; i++)
 	{
 		if (text[i] == '#')
