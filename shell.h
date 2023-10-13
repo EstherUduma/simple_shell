@@ -48,6 +48,6 @@ int is_delim(char c, char *delim);
 int interactive(info_t *info);
 char *find_path(info_t *info, char *pathstr, char *cmd);
 char *dup_chars(char *pathstr, int start, int stop);
-int is_cmd(info_t *info, char *path);
+int is_cmd(info_t *ino, char *path);
 
 #endif
