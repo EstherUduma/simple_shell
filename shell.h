@@ -26,7 +26,7 @@ typedef struct Alias
 
 int main(void);
 char *customGetLine(void);
-char *customStrtok(char *str, const char *delim);
+char *customStrtok(const char *str, const char *delim);
 void *custom_realloc(void *ptr, size_t size);
 void *custom_memcpy(void *dst, const void *src, size_t n);
 int customStringCopy(char *destination, const char *source);
@@ -58,4 +58,8 @@ int _isalpha(int c);
 int is_delim(char c, char *delim);
 int num_args(char *argv[]);
 int alias_command(char *argv[], int numArgs);
+void displayPrompt(void);
+void processUserInput(void);
+void processCommand(char *cmd);
+
 #endif

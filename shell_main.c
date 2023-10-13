@@ -1,19 +1,28 @@
 #include "shell.h"
 
 /**
-* processUserInput - process user input
+* displayPrompt - this function displays the shell prompt
+*/
+
+void displayPrompt(void)
+{
+	if (isatty(STDIN_FILENO))
+	{
+		write(STDOUT_FILENO, "$  ", 2);
+	}
+}
+
+/**
+* processUserInput - process user input and handle commands.
 */
 
 void processUserInput(void)
 {
-	char *userInput, prompt[] = "$ ", *full_path;
+	char *userInput;
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-		{
-			write(STDOUT_FILENO, prompt, 2);
-		}
+		displayPrompt();
 		userInput = customGetLine();
 
 		if (userInput == NULL)
@@ -25,7 +34,39 @@ void processUserInput(void)
 
 		if (userInput[0] != '\0' && customStringCompare(userInput, "\n") != 0)
 		{
-			full_path = customWhich(userInput);
+			processCommand(userInput);
+		}
+
+		free(userInput);
+	}
+}
+
+/**
+* processCommand - process a user command
+* @cmd: the user command
+*/
+
+void processCommand(char *cmd)
+{
+	int num_args;
+	char *alias_cmd, *full_path;
+	char *args[MAX_ARGS];
+
+	if (customStringCompare(cmd, "alias") == 0)
+	{
+	}
+	else if (customStringCompare(cmd, "alias") != 0)
+	{
+		num_args = customStrtok(cmd, args);
+
+		if (num_args == 3 && customStringCompare(args[1], "alias") == 0)
+		{
+			alias_name = args[2];
+			alias_cmd = args[3];
+		}
+		else
+		{
+			full_path = customWhich(cmd);
 
 			if (full_path != NULL)
 			{
@@ -34,40 +75,12 @@ void processUserInput(void)
 				free(full_path);
 			}
 		}
-
-		free(userInput);
 	}
 }
 
 /**
-* handleAliases - handle alias related commands
-*/
-
-void handleAliases(void)
-{
-	char *cmd, *argv[MAX_ARGS], num_arg;
-
-	do {
-		if (isatty(STDIN_FILENO))
-		{
-			write(1, "$ ", 2);
-		}
-		cmd = customGetLine();
-		trimTrailingSpaces(cmd);
-		if (cmd == NULL)
-		{
-			exit(EXIT_SUCCESS);
-		}
-		splitIntoArgs(cmd, argv);
-		num_arg = num_args(argv);
-		alias_command(argv, num_arg);
-		free(cmd);
-	} while (1);
-}
-
-/**
-* main - the entry point of the program
-* Return: (0)
+* main - entry point of the function
+* Return: 0
 */
 
 int main(void)
