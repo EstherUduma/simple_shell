@@ -13,6 +13,17 @@
 
 extern char **environ;
 
+/**
+* struct Alias - structure to represent an alias
+* @name: the name of the alias
+* @aliasCmd: the command associated with the the alias
+*/
+typedef struct Alias
+{
+	const char *name;
+	const char *aliasCmd;
+} Alias;
+
 int main(void);
 char *customGetLine(void);
 char *customStrtok(char *str, const char *delim);
@@ -46,5 +57,5 @@ int _atoi(char *s);
 int _isalpha(int c);
 int is_delim(char c, char *delim);
 int num_args(char *argv[]);
-
+int alias_command(char *argv[], int numArgs);
 #endif

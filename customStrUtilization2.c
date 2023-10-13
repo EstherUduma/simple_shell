@@ -28,7 +28,7 @@ void splitIntoArgs(char *inputCommand, char *args[MAX_ARGS])
 
 	while (token != NULL)
 	{
-		args[argIndex++] == token;
+		args[argIndex++] = token;
 		token = customStrtok(NULL, " ");
 	}
 	args[argIndex] = NULL;

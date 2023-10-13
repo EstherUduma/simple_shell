@@ -30,11 +30,12 @@ void listAliases(void)
 
 	while (aliases[i].name != NULL)
 	{
-		_write("alias ", 6);
-		_write(aliases[i].name, customStringLength(aliases[i].name));
-		_write("='", 2);
-		_write(aliases[i].aliasCmd, customStringLength(aliases[i].aliasCmd));
-		_write("'\n", 2);
+		write(STDOUT_FILENO, "alias ", 6);
+		write(STDOUT_FILENO, aliases[i].name, customStringLength(aliases[i].name));
+		write(STDOUT_FILENO, "='", 2);
+		write(STDOUT_FILENO, aliases[i].aliasCmd, customStringLength
+		(aliases[i].aliasCmd));
+		_write(STDOUT_FILENO, "'\n", 2);
 		i++;
 	}
 }
@@ -46,7 +47,7 @@ void listAliases(void)
 * Return: 0 if alias found and printed, 1 if not found
 */
 
-int defineAlias(char *aliasName, char *aliasCmd)
+int defineAlias(char *aliasName, char *aliasCmd __attribute__((unused)))
 {
 	static Alias aliases[] = {
 		{"l", "ls -CF"},
@@ -61,11 +62,13 @@ int defineAlias(char *aliasName, char *aliasCmd)
 	{
 		if (customStringCompare(aliasName, aliases[i].name) == 0)
 		{
-			_write("alias ", 6);
-			_write(aliases[i].name, customStringLength(aliases[i].name));
-			_write("='", 2);
-			_write(aliases[i].aliasCmd, customStringLength(aliases[i].aliasCmd));
-			_write("'\n", 2);
+			write(STDOUT_FILENO, "alias ", 6);
+			write(STDOUT_FILENO, aliases[i].name, customStringLength
+			(aliases[i].name));
+			write(STDOUT_FILENO, "='", 2);
+			write(STDOUT_FILENO, aliases[i].aliasCmd, customStringLength
+			(aliases[i].aliasCmd));
+			write(STDOUT_FILENO, "'\n", 2);
 
 			return (0);
 		}
@@ -93,12 +96,12 @@ int processAliasCmd(char *args[MAX_ARGS], int numArgs __attribute__((unused)))
 	}
 	if (args[1] != NULL)
 	{
-		if (customHasEqualSign(args[1] && numArgs == 2))
+		if (customHasEqualSign(args[1]) && numArgs == 2)
 		{
 		}
 		else if (customHasEqualSign(args[1]) == 0 && numArgs == 2)
 		{
-			defineAlias(arguments[1], arguments[2]);
+			defineAlias(args[1], args[2]);
 		}
 		else
 		{
