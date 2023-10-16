@@ -61,5 +61,6 @@ int alias_command(char *argv[], int numArgs);
 void displayPrompt(void);
 void processUserInput(void);
 void processCommand(char *cmd);
+int ex_code = 0;
 
 #endif

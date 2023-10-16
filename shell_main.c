@@ -49,7 +49,7 @@ void processUserInput(void)
 void processCommand(char *cmd)
 {
 	int num_args;
-	char *alias_cmd, *full_path;
+	char *alias_name, *alias_cmd, *full_path;
 	char *args[MAX_ARGS];
 
 	if (customStringCompare(cmd, "alias") == 0)
@@ -57,7 +57,7 @@ void processCommand(char *cmd)
 	}
 	else if (customStringCompare(cmd, "alias") != 0)
 	{
-		num_args = customStrtok(cmd, args);
+		num_args = customStrtok(cmd, " ");
 
 		if (num_args == 3 && customStringCompare(args[1], "alias") == 0)
 		{
