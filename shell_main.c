@@ -6,9 +6,20 @@
 * @argVector: array of command line arguments
 * Return: 0 on success
 */
-
 int main(int argCount __attribute__((unused)), char **argVector __attribute__
 ((unused)))
+{
+	processUserInput();
+	return (0);
+}
+
+/**
+* processUserInput -  processes a shell command
+* @arguments: the command arguments
+* Return: 0  if successful and 1 if not
+*/
+
+void processUserInput(void)
 {
 	char *commandCopy = NULL, *arguments[MAX_ARGS], *currentCommand;
 	int numberOfArguments, resultCode, commandCount = 0;
@@ -21,7 +32,7 @@ int main(int argCount __attribute__((unused)), char **argVector __attribute__
 		currentCommand = readUserCommand();
 		if (currentCommand == NULL)
 			exit(exitCode);
-		if (currentCommand[0] == '\0' || (customStringCompare(currentCommand, "\n") 
+		if (currentCommand[0] == '\0' || (customStringCompare(currentCommand, "\n")
 			== 0))
 			continue;
 		removeWhiteSpaces(currentCommand);
@@ -34,14 +45,15 @@ int main(int argCount __attribute__((unused)), char **argVector __attribute__
 			free(commandCopy);
 			continue;
 		}
-		if (custom_strdup(arguments[0], "exit") == 0)
+		if (custom_strdup(arguments[0], "exit") ==   0)
 		{
-			resultCode = exitShell(arguments[1], commandCount, argumentVector[0], arguments);
+			resultCode = exitShell(arguments[1], commandCount, argumentVector[0],
+			arguments);
 			free(currentCommand);
 			free(commandCopy);
 			if (resultCode == 500)
 				continue;
-			exit(resultCode);
+				exit(resultCode);
 		}
 		if (processShellCommand(arguments) == 0)
 		{
@@ -52,9 +64,21 @@ int main(int argCount __attribute__((unused)), char **argVector __attribute__
 		}
 		free(currentCommand);
 		free(commandCopy);
-	}
-	while (1);
-	return (0);
+	} while (1);
+}
+
+/**
+* readUserCommand - reads user command
+* Return: userInput
+*/
+
+char *readUserCommand(void)
+{
+	char *userInput;
+
+	userInput = readInputLine();
+	signal(SIGINT, handleInterrupt);
+	return (userInput);
 }
 
 /**
@@ -64,7 +88,9 @@ int main(int argCount __attribute__((unused)), char **argVector __attribute__
 
 int isWhiteSpace(char character)
 {
-	if (character == ' ' || character == '\t');
+	if (character == ' ' || character == '\t')
+		return (1);
+	return (0);
 }
 
 /**
@@ -145,4 +171,4 @@ void handleInterrupt(int signo __attribute__((unused)))
 void handleSegmetationFault(int signo __attribute__((unused)))
 {
 	exit(1);
-
+}
