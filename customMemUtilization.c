@@ -96,3 +96,25 @@ char *custom_strcat(char *destination, const char *source)
 
 	return (destination);
 }
+
+/**
+* customFindChar - this finds a character in a string
+* @source: the string to search
+* @target: the character to find
+* Return: pointer to the character's position or NULL
+*/
+
+char *customFindChar(const char *source, int target)
+{
+	char *result = (char *)source;
+
+	while (*result != '\0')
+	{
+		if (*result == target)
+		{
+			return (result);
+		}
+		result++;
+	}
+	return (NULL);
+}

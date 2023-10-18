@@ -69,3 +69,34 @@ int customHasEqualSign(char *text)
 	}
 	return (0);
 }
+
+/**
+* customExit - this function exits with a status code
+* @status: status code to exit with
+* @cmdCount: count of command
+* @shellName: name of the shell
+* @cmdArgs: string of input command arguments
+* Return: exit code
+*/
+
+int customExit(char *status, int cmdCount, char *shellName, char **cmdArgs)
+{
+	int exitCode = 0;
+	int charIndex = 0;
+
+	if (status != NULL)
+	{
+		while (status[charIndex])
+		{
+			if (!(status[charIndex] >= '0' && status[charIndex] <= '9'))
+			{
+				customError(shellName, cmdCount. cmdArgs[0], cmdArgs[1]);
+				exitCode = 2;
+				return (500);
+			}
+			charIndex++;
+		}
+		exitCode = customAtoi(status);
+	}
+	return (exitCode);
+}
