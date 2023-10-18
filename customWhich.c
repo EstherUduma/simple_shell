@@ -31,3 +31,16 @@ char *customWhich(const char *command)
 
 	return (NULL);
 }
+
+/**
+* DisplayAllAliases - print all aliases in the list
+* @aliases: pointer to the first alias in the list
+*/
+
+void DisplayAllAliases(alias_t *aliases)
+{
+	for (alias_t *curAlias = aliases; curAlias; curAlias = curAlias->next)
+	{
+		defineAlias(curAlias);
+	}
+}
