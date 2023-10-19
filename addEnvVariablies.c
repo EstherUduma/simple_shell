@@ -9,60 +9,62 @@
 
 void setEnvVar(struct Node **head, const char *name, const char *value)
 {
-	struct Node new_node = malloc(sizeof(struct Node));
 	size_t nameLen = customStringLength(name);
 	size_t valueLen = customStringLength(value);
+	size_t newVarLength = nameLen + valueLen + 2;
+	char *newEnvVar = (char *)malloc(newVarLength);
 
-	new_node->str = malloc(nameLen + valueLen + 2);
-	if (new_node->str == NULL)
-	{
-		free(new_node->str);
-		free(new_node);
+	if (newEnvVar == NULL)
 		return;
-	}
+	customStringCopy(newEnvVar, name);
+	newEnvVar[nameLen] = '=';
+	customStringCopy(newEnvVar + nameLen + 1, value);
 
-	custom_memcpy(new_node->str, name, nameLen);
-	new_node->str[nameLen] = '=';
-	custom_memcpy(new_node->str + nameLen + 1, value, valueLen);
-	new_node->str[nameLen + valueLen + 1] = '\0';
-
-	remEnvVar(head, name);
-	add_node(head, new_node);
-}
-
-/**
-* remEnvVar - remove an environment variable
-* @head: a pointer to the head of the linked list
-* @name: the name of the environment variable to be removed
-*/
-
-void remEnvVar(struct Node **head, const char *name)
-{
 	struct Node *current = *head;
 	struct Node *prev = NULL;
 
 	while (current != NULL)
 	{
-		size_t nameLen = customStringLength(name);
-
-		if (customStringCompare(current->str, name, nameLen) == 0 &&
+		if (customStringCompare(current->str, name, nameLen) ==  0 &&
 			current->str[nameLen] == '=')
 		{
 			if (prev != NULL)
-			{
 				prev->next = current->next;
-			}
 			else
-			{
 				*head = current->next;
-			}
 			free(current->str);
 			free(current);
-			return;
 		}
 		prev = current;
 		current = current->next;
 	}
+	ifEmpty(head, newEnvVar, newVarLength);
+}
+
+/**
+* ifEmpty - add or free memory
+* @head: head of the linkedlist
+* @newEnvVar: environment variable string
+* @newVarLength: length of the new environment
+*/
+
+void ifEmpty(struct Node **head, char *newEnvVar, size_t newVarLength)
+{
+	if (newVarLength > 0)
+	{
+		struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+
+		if (newNode == NULL)
+		{
+			free(newEnvVar);
+			return;
+		}
+		newNode->str = newEnvVar;
+		newNode->next = *head;
+		*head = newNode;
+	}
+	else
+		free(newEnvVar);
 }
 
 /**
