@@ -90,7 +90,7 @@ int customExit(char *status, int cmdCount, char *shellName, char **cmdArgs)
 		{
 			if (!(status[charIndex] >= '0' && status[charIndex] <= '9'))
 			{
-				customError(shellName, cmdCount. cmdArgs[0], cmdArgs[1]);
+				printShellErr(shellName, cmdCount, cmdArgs[0], cmdArgs[1]);
 				exitCode = 2;
 				return (500);
 			}

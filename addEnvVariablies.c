@@ -13,6 +13,8 @@ void setEnvVar(struct Node **head, const char *name, const char *value)
 	size_t valueLen = customStringLength(value);
 	size_t newVarLength = nameLen + valueLen + 2;
 	char *newEnvVar = (char *)malloc(newVarLength);
+	struct Node *current = *head;
+	struct Node *prev = NULL;
 
 	if (newEnvVar == NULL)
 		return;
@@ -20,12 +22,9 @@ void setEnvVar(struct Node **head, const char *name, const char *value)
 	newEnvVar[nameLen] = '=';
 	customStringCopy(newEnvVar + nameLen + 1, value);
 
-	struct Node *current = *head;
-	struct Node *prev = NULL;
-
 	while (current != NULL)
 	{
-		if (customStringCompare(current->str, name, nameLen) ==  0 &&
+		if (customStringCompare(current->str, name) ==  0 &&
 			current->str[nameLen] == '=')
 		{
 			if (prev != NULL)

@@ -16,6 +16,7 @@
 #define MAX_ARGS 100
 
 extern char **environ;
+extern struct Node *myEnvironmentList;
 
 /**
 * struct Node - a custom data structure
@@ -37,9 +38,10 @@ typedef struct Alias
 {
 	const char *name;
 	const char *aliasCmd;
+	struct Alias *next;
 } Alias;
 
-char *customGetLine(void);
+char *customGetLine(char **userInput, size_t *bufferSize, FILE *stream);
 char *customStrtok(const char *str, const char *delim);
 void *custom_realloc(void *ptr, size_t size);
 void *custom_memcpy(void *dst, const void *src, size_t n);
@@ -59,7 +61,7 @@ void handleHashHelper(char *buffer, size_t *buffer_index);
 void handleHash(char *text);
 ssize_t _write(int fd, const void *buf, size_t count);
 void listAlises(void);
-int defineAlias(char *aliasName, char *aliasCmd);
+int defineAlias(char *aliasName, const char *aliasCmd);
 int processAliasCmd(char *args[MAX_ARGS], int numArgs __attribute__((unused)));
 void processUserInput(void);
 void handleAliases(void);
@@ -101,8 +103,9 @@ char *readUserCommand(void);
 int isWhiteSpace(char character);
 void removeWhiteSpaces(char *text);
 char *readInputLine(void);
-int exitShell(char *argument, char *argVct, char *args[]);
+int exitShell(char *argument);
 int customAtoi(char *str);
 int customIsNumber(const char *str);
+void ifEmpty(struct Node **head, char *newEnvVar, size_t newVarLength);
 
 #endif

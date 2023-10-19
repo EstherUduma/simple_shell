@@ -19,6 +19,8 @@ void handleSegfault(int signo __attribute__((unused)))
 
 int main(int argCnt, char **argVct)
 {
+	char *curCmd;
+
 	signal(SIGSEGV, handleSegfault);
 	do {
 		if (isatty(STDIN_FILENO))
@@ -29,15 +31,13 @@ int main(int argCnt, char **argVct)
 		if (curCmd[0] == '\0' || customStringCompare(curCmd, "\n") == 0)
 		{
 			free(curCmd);
-			free(commandCopy);
 			continue;
 		}
-		if (customStringCompare(args[0], "exit") == 0)
+		if (customStringCompare(curCmd, "exit") == 0)
 		{
 			int rsltCode = exitShell(args[1], argCnt, argVct, args);
 
 			free(curCmd);
-			free(commandCopy);
 			if (rsltCode == 500)
 				continue;
 			exit(rsltCode);
@@ -48,7 +48,6 @@ int main(int argCnt, char **argVct)
 		else
 			executeCommand(args, argVct[0], curCmd);
 		free(curCmd);
-		free(commandCopy);
 	} while (1);
 	return (0);
 }

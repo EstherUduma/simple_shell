@@ -53,12 +53,10 @@ char *readInputLine(void)
 /**
 * exitShell - process the exit command and exit the shell
 * @argument: the exit argument
-* @argVct: the array of command line arguments
-* @args: the array of command arguments
 * Return: the exit status
 */
 
-int exitShell(char *argument, char *argVct, char *args[MAX_ARGS])
+int exitShell(char *argument)
 {
 	int exitStatus = 0;
 
@@ -113,9 +111,10 @@ int customAtoi(char *str)
 
 int customIsNumber(const char *str)
 {
+	int i  = 0;
+
 	if (str == NULL || *str == '\0')
 		return (0);
-	int i = 0;
 
 	if (str[0] == '-')
 		i = 1;

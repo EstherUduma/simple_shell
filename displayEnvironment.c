@@ -68,7 +68,7 @@ int setEnvironmentVariable(const char *name, const char *value)
 
 	for (env = environ; *env != NULL; env++)
 	{
-		addNode(&head, newNode(*env));
+		add_node(&head, new_node(*env));
 	}
 	setEnvVar(&head, name, value);
 	updateEnviron(head);
@@ -91,7 +91,7 @@ int unsetEnvironmentVariable(const char *name)
 
 	for (env = environ; *env != NULL; env++)
 	{
-		if (customStringCompare(*env, name, len) == 0 && (*env)[len] == '=')
+		if (customStringCompare(*env, name) == 0 && (*env)[len] == '=')
 		{
 			for (e = env; *e != NULL; e++)
 			{

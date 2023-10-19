@@ -37,10 +37,12 @@ char *customWhich(const char *command)
 * @aliases: pointer to the first alias in the list
 */
 
-void DisplayAllAliases(Alias *aliases)
+void DisplayAllAliases(struct Alias *aliases)
 {
-	for (alias_t *curAlias = aliases; curAlias; curAlias = curAlias->next)
+	struct Alias *curAlias;
+
+	for (curAlias = aliases; curAlias; curAlias = curAlias->next)
 	{
-		defineAlias(curAlias);
+		defineAlias((char *)curAlias->name, curAlias->aliasCmd);
 	}
 }

@@ -5,7 +5,7 @@
 * @signalNumber: the signal number
 */
 
-void handleSegmentationFault(int signalNumber)
+void handleSegmentationFault(int signalNumber __attribute__((unused)))
 {
 	exit(1);
 }

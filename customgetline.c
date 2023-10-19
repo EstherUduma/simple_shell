@@ -2,15 +2,19 @@
 
 /**
 * customGetLine - reads user input from the stdin and returns it as a string
+* @userInput: pointer to the userInput String
+* @bufferSize: pointer to store the size of the buffer
+* @stream: the input stream stdin
 * Return: userInput
 */
 
-char *customGetLine(void)
+char *customGetLine(char **userInput, size_t *bufferSize, FILE *stream)
 {
-	ssize_t bytesRead;
 	size_t buffer_size = BUFFER_SIZE;
 	char c, *buffer = (char *)malloc(sizeof(char) * buffer_size);
 	size_t buffer_index;
+	ssize_t bytesRead = read(STDIN_FILENO, &c, 1);
+	(void)userInput, (void)bufferSize, (void)stream;
 
 	if (buffer == NULL)
 	{
@@ -19,7 +23,6 @@ char *customGetLine(void)
 	}
 	while (1)
 	{
-		bytesRead = read(STDIN_FILENO, &c, 1);
 		if (bytesRead == 0 || c == EOF || c == '\n')
 		{
 			if (buffer_index == 0)

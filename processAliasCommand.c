@@ -20,11 +20,9 @@ ssize_t _write(int fd, const void *buf, size_t count)
 void listAliases(void)
 {
 	static Alias aliases[] = {
-		{"l", "ls -CF"},
-		{"la", "ls -A"},
-		{"ll", "ls -alF"},
-		{"ls", "ls --color=auto"},
-		{NULL, NULL}
+		{"l", "ls -CF", NULL},
+		{"la", "ls -A", NULL},
+		{"ll", "ls -alF", NULL}
 	};
 	int i = 0;
 
@@ -47,14 +45,12 @@ void listAliases(void)
 * Return: 0 if alias found and printed, 1 if not found
 */
 
-int defineAlias(char *aliasName, char *aliasCmd __attribute__((unused)))
+int defineAlias(char *aliasName, const char *aliasCmd __attribute__((unused)))
 {
 	static Alias aliases[] = {
-		{"l", "ls -CF"},
-		{"la", "ls -A"},
-		{"ll", "ls -alF"},
-		{"ls", "ls --color=auto"},
-		{NULL, NULL}
+		{"l", "ls -CF", NULL},
+		{"la", "ls -A", NULL},
+		{"ll", "ls -alF", NULL}
 	};
 	int i = 0;
 

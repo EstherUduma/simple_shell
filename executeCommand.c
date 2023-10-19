@@ -7,21 +7,21 @@
 
 void executeCommand(char **arguments)
 {
-	char *cmd, error[50];
+	char error[50];
 	int status;
 
 	customStringCopy(error, arguments[0]);
 
 	if (arguments[0][0] == '/')
 	{
-		if (customcheck(arguments, NULL, error))
+		if (customcheck(arguments, error))
 		{
 			return;
 		}
 	}
 	else
 	{
-		if (customcheck(arguments, arguments[0], error, environ))
+		if (customcheck(arguments, error))
 		{
 			return;
 		}
