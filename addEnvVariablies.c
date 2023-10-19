@@ -9,11 +9,6 @@
 
 void setEnvVar(struct Node **head, const char *name, const char *value)
 {
-	struct Node
-	{
-		char *str;
-		struct Node *next;
-	};
 	struct Node new_node = malloc(sizeof(struct Node));
 	size_t nameLen = customStringLength(name);
 	size_t valueLen = customStringLength(value);
