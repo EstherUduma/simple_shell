@@ -1,1 +1,1 @@
-Authors: Esther Ann Uduma, Gugulethu Rachel Mthembu
+Authors: Esther Ann Uduma

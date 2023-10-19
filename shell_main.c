@@ -1,75 +1,74 @@
 #include "shell.h"
 
 /**
-* main - entry point
-* @argCount: number of command line arguments
-* @argVector: array of command line arguments
+* handleSegfault - signal handler for SIGSEGv
+* @signo: the signal number
+*/
+
+void handleSegfault(int signo __attribute__((unused)))
+{
+	exit(1);
+}
+
+/**
+* main - entry point of the program
+* @argCnt: the number of command line arguments
+* @argVct: an array of command line arguments
 * Return: 0 on success
 */
-int main(int argCount __attribute__((unused)), char **argVector __attribute__
-((unused)))
+
+int main(int argCnt, char **argVct)
 {
-	processUserInput();
+	signal(SIGSEGV, handleSegfault);
+	do {
+		if (isatty(STDIN_FILENO))
+			write(1, "$ ", 2);
+		curCmd = readUserCommand();
+		if (curCmd == NULL)
+			exit(exCode);
+		if (curCmd[0] == '\0' || customStringCompare(curCmd, "\n") == 0)
+		{
+			free(curCmd);
+			free(commandCopy);
+			continue;
+		}
+		if (customStringCompare(args[0], "exit") == 0)
+		{
+			int rsltCode = exitShell(args[1], argCnt, argVec, args);
+
+			free(curCmd);
+			free(commandCopy);
+			if (rsltCode == 500)
+				continue;
+			exit(rsltCode);
+		}
+		if (processCommand(args) == 0)
+		else
+			executeCommand(args, argVector[0], curCmd);
+		free(curCmd);
+		free(commanfCopy);
+	} while (1);
 	return (0);
 }
 
 /**
-* processUserInput -  processes a shell command
-* @arguments: the command arguments
-* Return: 0  if successful and 1 if not
+* handleInterrupt - signal handler for SIGINT
+* @signo: the signal number
 */
 
-void processUserInput(void)
+void handleInterrupt(int signo __attribute__((unused)))
 {
-	char *commandCopy = NULL, *arguments[MAX_ARGS], *currentCommand;
-	int numberOfArguments, resultCode, commandCount = 0;
-
-	signal(SIGSEGV, handleSegmentationFault);
-	do {
-		commandCount++;
-		if (isatty(STDIN_FILENO))
-			write(1, "$ ", 2);
-		currentCommand = readUserCommand();
-		if (currentCommand == NULL)
-			exit(exitCode);
-		if (currentCommand[0] == '\0' || (customStringCompare(currentCommand, "\n")
-			== 0))
-			continue;
-		removeWhiteSpaces(currentCommand);
-		commandCopy = custom_strdup(currentCommand);
-		numberOfArguments = splitIntoArgs(commandCopy, arguments);
-		if (currentCommand[0] == '\0' || (customStringCompare(currentCommand, "\n")
-			== 0))
-		{
-			free(currentCommand);
-			free(commandCopy);
-			continue;
-		}
-		if (custom_strdup(arguments[0], "exit") ==   0)
-		{
-			resultCode = exitShell(arguments[1], commandCount, argumentVector[0],
-			arguments);
-			free(currentCommand);
-			free(commandCopy);
-			if (resultCode == 500)
-				continue;
-				exit(resultCode);
-		}
-		if (processShellCommand(arguments) == 0)
-		{
-		}
-		else
-		{
-			executeCommand(arguments, argumentVector[0], commandCount);
-		}
-		free(currentCommand);
-		free(commandCopy);
-	} while (1);
+	write(1, "\n", 1);
+	if (curCmd != NULL)
+	{
+		free(curCmd);
+		curCmd = NULL;
+	}
 }
 
 /**
-* readUserCommand - reads user command
-* Return: userInput
+* readUserCommand - reads a command from the user
+* Return: a pointer to the users input string or NULL if error
 */
 
 char *readUserCommand(void)
@@ -84,91 +83,14 @@ char *readUserCommand(void)
 /**
 * isWhiteSpace - checks if a character is a white space character
 * @character: the character to be checked
+* Return: 0
 */
 
 int isWhiteSpace(char character)
 {
 	if (character == ' ' || character == '\t')
+	{
 		return (1);
+	}
 	return (0);
-}
-
-/**
-* removeWhiteSpaces - removes leading and trailing white spaces
-* @text: the string to remove white spaces from
-*/
-
-void removeWhiteSpaces(char *text)
-{
-	int dest = 0;
-	int spaceCount = 0, source;
-
-	if (text == NULL)
-		return;
-	for (source = 0; text[source] != '\0'; source++)
-	{
-		if (!isWhiteSpace(text[source]))
-		{
-			text[dest++] = text[source];
-			spaceCount = 0;
-		}
-		else if (spaceCount == 0)
-		{
-			text[dest++] = text[source];
-			spaceCount = 1;
-		}
-	}
-	text[dest] = '\0';
-}
-
-/**
-* readUserCommand - read a command from the user
-* Return: pointer to the user's input string, or NULL if on error
-*/
-
-char *readUserCommand(void)
-{
-	char *userInput = NULL;
-	size_t bufferSize = 0, inputLength;
-
-	if (isatty(STDIN_FILENO))
-	{
-		write(STDOUT_FILENO, "$ ", 2);
-	}
-
-	customGetLine(&userInput, &bufferSize, stdin);
-	if (userInput != NULL)
-	{
-		inputLength = customStringLength(userInput);
-		if (inputLength > 0 && userInput[inputLength - 1] == '\n')
-		{
-			userInput[inputLength - 1] = '\0';
-		}
-	}
-	return (userInput);
-}
-
-/**
-* handleInterrupt - signal handler for SIGINT
-* @signo: the signal number
-*/
-
-void handleInterrupt(int signo __attribute__((unused)))
-{
-	write(1, "\n", 1);
-	if (currentCommand != NULL)
-	{
-		free(currentCommand);
-		currentCommand = NULL;
-	}
-}
-
-/**
-* handleSegmentationFault - signal handler
-* @signo: the signal number
-*/
-
-void handleSegmetationFault(int signo __attribute__((unused)))
-{
-	exit(1);
 }
