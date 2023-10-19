@@ -24,7 +24,7 @@ extern char **environ;
 */
 struct Node
 {
-	char* str;
+	char *str;
 	struct Node *next;
 };
 

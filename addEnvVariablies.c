@@ -9,7 +9,8 @@
 
 void setEnvVar(struct Node **head, const char *name, const char *value)
 {
-	struct Node {
+	struct Node
+	{
 		char *str;
 		struct Node *next;
 	};
