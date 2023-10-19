@@ -10,7 +10,7 @@ void changeDirectory(char *newPath)
 {
 	char *homeDir = customGetEnv("HOME");
 	char *oldWorkingDir = customGetEnv("OLDPWD");
-	char *currentWorkingDir = customGetEnv("PWD"), currentDit[1024];
+	char *currentWorkingDir = customGetEnv("PWD"), currentDir[1024];
 
 	if (newPath == NULL)
 	{
@@ -27,7 +27,7 @@ void changeDirectory(char *newPath)
 		if (oldWorkingDir != NULL)
 		{
 			if (chdir(oldWorkingDir) == -1)
-				perror("cd")
+				perror("cd");
 			else
 			{
 				customSetEnv("OLDPWD", currentWorkingDir, 1);

@@ -46,7 +46,7 @@ int displayEnvironment(void)
 
 	for (env = environ; *env != NULL; env++)
 	{
-		addNode(&head, newNode(*env));
+		add_node(&head, new_node(*env));
 	}
 
 	printEnvironment(head);
@@ -70,8 +70,8 @@ int setEnvironmentVariable(const char *name, const char *value)
 	{
 		addNode(&head, newNode(*env));
 	}
-	addEnvironmentVariable(&head, name, value);
-	updateEnvironment(head);
+	setEnvVar(&head, name, value);
+	updateEnviron(head);
 	freeEnvironmentList(head);
 
 	return (0);

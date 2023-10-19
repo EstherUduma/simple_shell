@@ -13,13 +13,13 @@ int customcheck(char **cmd_args, char *error_msg)
 	{
 		if (fork() == 0)
 		{
-			customexecve(cmd_args[0], cmd_args, environ);
+			customcheck(cmd_args[0], cmd_args, environ);
 		}
 		return (0);
 	}
 	else
 	{
-		_perror(error_msg);
+		perror(error_msg);
 		return (1);
 	}
 }

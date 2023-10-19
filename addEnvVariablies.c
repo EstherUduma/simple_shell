@@ -9,24 +9,29 @@
 
 void setEnvVar(struct Node **head, const char *name, const char *value)
 {
-	struct Node *nodeNode = new_node(NULL);
+	struct Node {
+		char *str;
+		struct Node *next;
+	};
+	struct Node new_node = malloc(sizeof(struct Node));
 	size_t nameLen = customStringLength(name);
 	size_t valueLen = customStringLength(value);
 
-	newNode->str = malloc(nameLen + valueLen + 2);
-	if (newNode->str == NULL)
+	new_node->str = malloc(nameLen + valueLen + 2);
+	if (new_node->str == NULL)
 	{
-		free(newNode);
+		free(new_node->str);
+		free(new_node);
 		return;
 	}
 
-	custom_memcpy(newNode->str, name, nameLen);
-	newNode->str[nameLen] = '=';
-	custom_memcpy(newNode->str + nameLen + 1, value, valueLen);
-	newNode->str[nameLen + valueLen + 1] = '\0';
+	custom_memcpy(new_node->str, name, nameLen);
+	new_node->str[nameLen] = '=';
+	custom_memcpy(new_node->str + nameLen + 1, value, valueLen);
+	new_node->str[nameLen + valueLen + 1] = '\0';
 
 	remEnvVar(head, name);
-	add_node(head, newNode);
+	add_node(head, new_node);
 }
 
 /**

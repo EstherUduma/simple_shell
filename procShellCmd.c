@@ -43,7 +43,7 @@ int procShellCmd(char **arguments)
 
 void printShellErr(char *shellName, int cmdCount, char *cmdName, char *cmdArg)
 {
-	printString(shellame);
+	printString(shellName);
 	printString(": ");
 	printNumber(cmdCount);
 	printString(": ");

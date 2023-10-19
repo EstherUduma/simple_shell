@@ -38,8 +38,8 @@ char *readInputLine(void)
 	size_t bufferSize = 0;
 	ssize_t inputLength;
 
-	cusstomGetLine(&userInput, &bufferSize, stdin);
-	if (usserInput != NULL)
+	customGetLine(&userInput, &bufferSize, stdin);
+	if (userInput != NULL)
 	{
 		inputLength = customStringLength(userInput);
 		if (inputLength > 0 && userInput[inputLength - 1] == '\n')
@@ -65,7 +65,7 @@ int exitShell(char *argument, char *argVct, char *args[MAX_ARGS])
 	if (argument == NULL)
 		return (0);
 	if (customIsNumber(argument))
-		exitStatus = customAtoi(arguent);
+		exitStatus = customAtoi(argument);
 	else
 	{
 		printString("exit: Illegal number: ");

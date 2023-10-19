@@ -6,12 +6,27 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <signal.h>
+#include <ctype.h>
 
 #define BUFFER_SIZE 1024
 #define MAX_ARGS 100
 
 extern char **environ;
+
+/**
+* struct Node - a custom data structure
+* @str: a pointer to a character string
+* @next: a pointer to the next node
+*/
+struct Node
+{
+	char* str;
+	struct Node *next;
+};
 
 /**
 * struct Alias - structure to represent an alias
@@ -24,7 +39,6 @@ typedef struct Alias
 	const char *aliasCmd;
 } Alias;
 
-int main(void);
 char *customGetLine(void);
 char *customStrtok(const char *str, const char *delim);
 void *custom_realloc(void *ptr, size_t size);
@@ -55,5 +69,40 @@ void displayPrompt(void);
 void processUserInput(void);
 void processCommand(char *cmd);
 int ex_code = 0;
+struct Node *new_node(char *str);
+void add_node(struct Node **head, struct Node *newNode);
+void remEnvVar(struct Node **head, const char *name);
+void setEnvVar(struct Node **head, const char *name, const char *value);
+void updateEnviron(struct Node *head);
+void changeDirectory(char *newPath);
+int customSetEnv(const char *name, const char *vaue, int overwrite);
+char *customFindChar(const char *source, int target);
+int customExit(char *status, int cmdCount, char *shellName, char **cmdArgs);
+void DisplayAllAliases(Alias *aliases);
+int customcheck(char **cmd_args, char *error_msg);
+int _putchar(char character);
+void printEnvironment(struct Node *head);
+void freeEnvironmentList(struct Node *head);
+int dispayEnvironment(void);
+int setEnvironmentVariable(const char *name, const char *value);
+int unsetEnvironmentVariable(const char *name);
+void executeCommand(char **arguments);
+void executeWithExecve(char *command, char **p, char **env);
+void printError(char *error, char *command);
+void printString(char *str);
+void printNumber(int n);
+void handleSegmentationFault(int signalNumber);
+int procShellCmd(char **arguments);
+void printShellErr(char *shellName, int cmdCount, char *cmdName, char *cmdArg);
+void handleSegfault(int signo);
+int main(int argCnt, char **argVct);
+void handleInterrupt(int signo);
+char *readUserCommand(void);
+int isWhiteSpace(char character);
+void removeWhiteSpaces(char *text);
+char *readInputLine(void);
+int exitShell(char *argument, char *argVct, char *args[]);
+int customAtoi(char *str);
+int customIsNumber(const char *str);
 
 #endif
