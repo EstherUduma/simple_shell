@@ -38,7 +38,8 @@ char *readInputLine(void)
 	size_t bufferSize = 0;
 	ssize_t inputLength;
 
-	customGetLine(&userInput, &bufferSize, stdin);
+	getline(&userInput, &bufferSize, stdin);
+	/**customGetLine(&userInput, &bufferSize, stdin);*/
 	if (userInput != NULL)
 	{
 		inputLength = customStringLength(userInput);

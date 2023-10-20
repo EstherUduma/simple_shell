@@ -71,7 +71,7 @@ int alias_command(char *argv[], int numArgs);
 void displayPrompt(void);
 void processUserInput(void);
 void processCommand(char *cmd);
-void add_node(struct Node **head, struct Node *newNode);
+/** add_node(struct Node **head, struct Node *newNode);*/
 void remEnvVar(struct Node **head, const char *name);
 void setEnvVar(struct Node **head, const char *name, const char *value);
 void updateEnviron(struct Node *head);
@@ -107,26 +107,30 @@ int customAtoi(char *str);
 int customIsNumber(const char *str);
 void ifEmpty(struct Node **head, char *newEnvVar, size_t newVarLength);
 void customStrTok(char *command, char *argv[MAX_ARGS]);
-struct Node *new_node(char *str) __attribute__((unused));
-/**static struct Node *new_node(char *str)
-*{
-*	struct Node *node = malloc(sizeof(struct Node));
-*
-*	if (node == NULL)
-*		return (NULL);
-*	node->str = str;
-*	node->next = NULL;
-*	return (node);
-*}
-*static void add_node(struct Node **head, struct Node *node) __attribute__((unused));
-*static void add_node(struct Node **head, struct Node *node)
-*{
-*	if (*head == NULL)
-*		return (NULL);
-*	node->str = str;
-*	node->next = NULL;
-*	return (node);
-*}
-*/
+static struct Node *new_node(char *str) __attribute__((unused));
+static struct Node *new_node(char *str)
+{
+	struct Node *node = malloc(sizeof(struct Node));
+
+	if (node == NULL)
+		return (NULL);
+	node->str = str;
+	node->next = NULL;
+	return (node);
+}
+static void add_node(struct Node **head, struct Node *node) __attribute__((unused));
+static void add_node(struct Node **head, struct Node *node)
+{
+	if (*head == NULL)
+		*head = node;
+	else
+	{
+		struct Node *current = *head;
+		for (; current->next != NULL ; )
+			current = current->next;
+		current->next = node;
+	}
+}
 int displayEnvironment(void);
+
 #endif

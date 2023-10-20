@@ -25,6 +25,7 @@ void executeCommand(char **args, char *argv, int i)
 			if (args[0][0] != '.')
 			{
 				curCmd = customWhich(args[0]);
+				printf("line 27 %s\n", curCmd);
 				if (curCmd == NULL)
 				{
 					printError(error, i, args[0]);

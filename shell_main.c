@@ -25,13 +25,14 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 	int should_continue = 1, i = 0, rsltCode;
 
 	signal(SIGSEGV, handleSegfault);
-
 	while (should_continue)
 	{
 		i++;
 		if (isatty(STDIN_FILENO))
 			write(1, "$ ", 2);
+		printf("line 34");
 		curCmd = readUserCommand();
+		printf("%s", curCmd);
 		if (curCmd == NULL)
 			exit(ex_code);
 		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] == '\0')
@@ -55,11 +56,14 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 			free(curCmdDup);
 			continue;
 		}
+		printf("line 60");
 		if (procShellCmd(desMain) == 0)
 		{
+			printf("line 63");
 		}
 		else
 			executeCommand(desMain, aVct[0], i);
+		printf("line 66");
 		free(curCmd);
 		free(curCmdDup);
 	}

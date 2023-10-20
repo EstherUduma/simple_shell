@@ -10,30 +10,32 @@
 char *customStrtok(char *str, const char *delim)
 {
 	static char *currentToken;
-	char *token = currentToken;
+	char *token;
+	int size = 0, i = 0;
 
 	if (str != NULL)
 	{
 		currentToken = str;
 	}
-
-	if (currentToken == NULL || *currentToken == '\0')
+	while (currentToken[i] != '\0')
+		if (currentToken[i] ==  *delim)
+		{
+			currentToken[i] = '\0';
+			token = currentToken;
+			currentToken = &currentToken[i + 1];
+			return (token);
+		}
+		else
+			i++;
+	if (currentToken[0] != '\0')
 	{
-		return (NULL);
+		while (currentToken[size] != 0)
+			size++;
+		token = currentToken;
+		currentToken = currentToken + size;
+		return (token);
 	}
-
-	while (*currentToken != '\0' && !strchr(delim, *currentToken))
-	{
-		currentToken++;
-	}
-
-	if (*currentToken != '\0')
-	{
-		*currentToken = '\0';
-		currentToken++;
-	}
-
-	return (token);
+	return (NULL);
 }
 
 /**
