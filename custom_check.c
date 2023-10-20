@@ -12,17 +12,12 @@
 
 int customcheck(char **cmd_args, char *curCmd, char *error, int i, char **env)
 {
-	int access_result;
 	pid_t idk;
 	char *m = NULL;
 
 	do {
-		if (curCmd == NULL)
-			m = cmd_args[0];
-		else
-			m = curCmd;
-		access_result = access(m, X_OK);
-		if (access_result == 0)
+		m = (curCmd == 	NULL) ? cmd_args[0] : curCmd;
+		if (access(m, X_OK) == 0)
 		{
 			idk = fork();
 			if (idk == 0)

@@ -14,41 +14,36 @@ void executeCommand(char **args, char *argv, int i)
 
 	customStringCopy(error, argv);
 	ex_code = 0;
-	do {
-		if (args[0][0] == '/')
+	if (args[0][0] == '/')
+	{
+		if (customcheck(args, NULL, error, i, environ))
+			return;
+
+	}
+	else
+	{
+		if (args[0][0] != '.')
 		{
-			if (customcheck(args, NULL, error, i, environ))
-				break;
+			curCmd = customWhich(args[0]);
+			if (curCmd == NULL)
+			{
+				printError(error, i, args[0]);
+				return;
+			}
+			if (customcheck(args, curCmd, error, i, environ))
+				return;
+			free(curCmd);
 		}
 		else
 		{
-			if (args[0][0] != '.')
-			{
-				curCmd = customWhich(args[0]);
-				printf("line 27 %s\n", curCmd);
-				if (curCmd == NULL)
-				{
-					printError(error, i, args[0]);
-					break;
-				}
-				if (customcheck(args, curCmd, error, i, environ))
-				{
-					free(curCmd);
-					break;
-				}
-				free(curCmd);
-			}
-			else
-			{
-				curCmd = args[0];
-				if (customcheck(args, curCmd, error, i, environ))
-					break;
-			}
+			curCmd = args[0];
+			if (customcheck(args, curCmd, error, i, environ))
+				return;
 		}
-		wait(&status);
-		if (WIFEXITED(status))
-			ex_code = (WEXITSTATUS(status));
-	} while (0);
+	}
+	wait(&status);
+	if (WIFEXITED(status))
+		ex_code = (WEXITSTATUS(status));
 }
 
 

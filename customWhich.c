@@ -11,13 +11,16 @@ char *customWhich(const char *command)
 	char *path = customGetEnv("PATH");
 	char *dir;
 	char full_path[1024];
+	char *cpath;
 
 	if (path == NULL)
 	{
 		return (NULL);
 	}
+	cpath = custom_strdup(path);
+	dir = customStrtok(cpath, ":");
 
-	while ((dir = customStrtok(path, ":")) != NULL)
+	while (dir != NULL)
 	{
 		customStringCopy(full_path, dir);
 		custom_strcat(full_path, "/");
@@ -27,7 +30,9 @@ char *customWhich(const char *command)
 		{
 			return (custom_strdup(full_path));
 		}
+		dir = customStrtok(NULL, ":");
 	}
+	free(cpath);
 
 	return (NULL);
 }
