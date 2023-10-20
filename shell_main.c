@@ -17,38 +17,50 @@ void handleSegfault(int signo __attribute__((unused)))
 * Return: 0 on success
 */
 
-int main(int argCnt, char **argVct)
+int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 {
-	char *curCmd;
+	char *curCmd, *curCmdDup, **desDup[MAX_ARGS], **desMain[MAX_ARGS];
+	int should_continue = 1, i = 0, rsltCode;
 
 	signal(SIGSEGV, handleSegfault);
-	do {
+
+	while (should_continue)
+	{
+		i++;
 		if (isatty(STDIN_FILENO))
 			write(1, "$ ", 2);
 		curCmd = readUserCommand();
 		if (curCmd == NULL)
 			exit(ex_code);
-		if (curCmd[0] == '\0' || customStringCompare(curCmd, "\n") == 0)
-		{
-			free(curCmd);
+		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] == '\0')
 			continue;
-		}
-		if (customStringCompare(curCmd, "exit") == 0)
+		removeWhiteSpaces(curCmd);
+		curCmdDup = custom_strdup(curCmd);
+		customStrtok(curCmdDup, desDup);
+		customStrtok(curCmd, desMain);
+		if (customStringCompare(desMain[0], "exit") == 0)
 		{
-			int rsltCode = exitShell(args[1], argCnt, argVct, args);
-
+			rsltCode = customExit(desDup[1], i, aVct[0], desMain);
 			free(curCmd);
+			free(curCmdDup);
 			if (rsltCode == 500)
 				continue;
 			exit(rsltCode);
 		}
-		if (processCommand(args) == 0)
+		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] = '\0')
+		{
+			free(curCmd);
+			free(curCmdDup);
+			continue;
+		}
+		if (procShellCmd(desMain) == 0)
 		{
 		}
 		else
-			executeCommand(args, argVct[0], curCmd);
+			executeCommand(desMain, aVct[0], i);
 		free(curCmd);
-	} while (1);
+		free(curCmdDup);
+	}
 	return (0);
 }
 
