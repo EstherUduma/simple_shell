@@ -30,17 +30,21 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 		i++;
 		if (isatty(STDIN_FILENO))
 			write(1, "$ ", 2);
-		printf("line 34");
 		curCmd = readUserCommand();
-		printf("%s", curCmd);
 		if (curCmd == NULL)
 			exit(ex_code);
-		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] == '\0')
+		if (curCmd[0] == '\0' || (customStringCompare(curCmd, "\n") == 0))
 			continue;
 		removeWhiteSpaces(curCmd);
 		curCmdDup = custom_strdup(curCmd);
 		customStrTok(curCmdDup, desDup);
 		customStrTok(curCmd, desMain);
+		if (curCmd[0] == '\0' || (customStringCompare(curCmd, "\n") == 0))
+		{
+			free(curCmd);
+			free(curCmdDup);
+			continue;
+		}
 		if (customStringCompare(desMain[0], "exit") == 0)
 		{
 			rsltCode = customExit(desDup[1], i, aVct[0], desMain);
@@ -50,20 +54,11 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 				continue;
 			exit(rsltCode);
 		}
-		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] == '\0')
-		{
-			free(curCmd);
-			free(curCmdDup);
-			continue;
-		}
-		printf("line 60");
 		if (procShellCmd(desMain) == 0)
 		{
-			printf("line 63");
 		}
 		else
 			executeCommand(desMain, aVct[0], i);
-		printf("line 66");
 		free(curCmd);
 		free(curCmdDup);
 	}
