@@ -17,7 +17,7 @@ int procShellCmd(char **arguments)
 	}
 	if (customStringCompare(arguments[0], "env") == 0)
 	{
-		printEnvironment(myEnvironmentList);
+		displayEnvironment();
 		return (0);
 	}
 	if (customStringCompare(arguments[0], "setenv") == 0 && argumentCount == 3)

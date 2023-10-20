@@ -55,7 +55,7 @@ void *custom_realloc(void *ptr, size_t size)
 * Return: the new string
 */
 
-char *custom_strdup(const char *input_str)
+char *custom_strdup(char *input_str)
 {
 	char *new_str;
 

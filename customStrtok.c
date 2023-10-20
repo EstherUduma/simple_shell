@@ -1,5 +1,5 @@
 #include "string.h"
-
+#define MAX_ARGS 100
 /**
 * customStrtok - this function tokenizes a string into substrings
 * @str: the string to tokenize
@@ -34,4 +34,23 @@ char *customStrtok(char *str, const char *delim)
 	}
 
 	return (token);
+}
+
+/**
+* customStrTok - tokenize
+* @command: the string
+* @argv: the array
+*/
+
+void customStrTok(char *command, char *argv[MAX_ARGS])
+{
+	char *customtok = customStrtok(command, " ");
+	int i;
+
+	for (i = 0; customtok != NULL && i < MAX_ARGS; i++)
+	{
+		argv[i] = customtok;
+		customtok = customStrtok(NULL, " ");
+	}
+	argv[MAX_ARGS - 1] = NULL;
 }

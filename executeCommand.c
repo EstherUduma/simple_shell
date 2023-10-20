@@ -2,37 +2,58 @@
 
 /**
 * executeCommand - executes a given command
-* @arguments: an array of command arguments
+* @args: an array of command arguments
+* @argv: the program name
+* @i: the command count
 */
 
-void executeCommand(char **arguments)
+void executeCommand(char **args, char *argv, int i)
 {
-	char error[50];
+	char *curCmd, error[50];
 	int status;
 
-	customStringCopy(error, arguments[0]);
-
-	if (arguments[0][0] == '/')
-	{
-		if (customcheck(arguments, error))
+	customStringCopy(error, argv);
+	ex_code = 0;
+	do {
+		if (args[0][0] == '/')
 		{
-			return;
+			if (customcheck(args, NULL, error, i, environ))
+				break;
 		}
-	}
-	else
-	{
-		if (customcheck(arguments, error))
+		else
 		{
-			return;
+			if (args[0][0] != '.')
+			{
+				curCmd = customWhich(args[0]);
+				if (curCmd == NULL)
+				{
+					printError(error, i, args[0]);
+					break;
+				}
+				if (customcheck(args, curCmd, error, i, environ))
+				{
+					free(curCmd);
+					break;
+				}
+				free(curCmd);
+			}
+			else
+			{
+				curCmd = args[0];
+				if (customcheck(args, curCmd, error, i, environ))
+					break;
+			}
 		}
-	}
-	wait(&status);
-
-	if (WIFEXITED(status))
-	{
-		ex_code = WEXITSTATUS(status);
-	}
+		wait(&status);
+		if (WIFEXITED(status))
+			ex_code = (WEXITSTATUS(status));
+	} while (0);
 }
+
+
+
+
+
 
 /**
 * executeWithExecve- executes a command with execve and handles errors
@@ -56,14 +77,15 @@ void executeWithExecve(char *command, char **p, char **env)
 * @command: the command associated with the error
 */
 
-void printError(char *error, char *command)
+void printError(char *error, int i, char *command)
 {
 	ex_code = 127;
 	printString(error);
 	printString(": ");
-	printString("Command not found: ");
+	printNumber(i);
+	printString(": ");
 	printString(command);
-	printString("\n");
+	printString(": Command not found\n");
 }
 
 /**

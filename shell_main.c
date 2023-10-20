@@ -10,6 +10,8 @@ void handleSegfault(int signo __attribute__((unused)))
 	exit(1);
 }
 
+int ex_code = 0;
+
 /**
 * main - entry point of the program
 * @argCnt: the number of command line arguments
@@ -19,7 +21,7 @@ void handleSegfault(int signo __attribute__((unused)))
 
 int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 {
-	char *curCmd, *curCmdDup, **desDup[MAX_ARGS], **desMain[MAX_ARGS];
+	char *curCmdDup, *desDup[MAX_ARGS], *desMain[MAX_ARGS];
 	int should_continue = 1, i = 0, rsltCode;
 
 	signal(SIGSEGV, handleSegfault);
@@ -36,8 +38,8 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 			continue;
 		removeWhiteSpaces(curCmd);
 		curCmdDup = custom_strdup(curCmd);
-		customStrtok(curCmdDup, desDup);
-		customStrtok(curCmd, desMain);
+		customStrTok(curCmdDup, desDup);
+		customStrTok(curCmd, desMain);
 		if (customStringCompare(desMain[0], "exit") == 0)
 		{
 			rsltCode = customExit(desDup[1], i, aVct[0], desMain);
@@ -47,7 +49,7 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 				continue;
 			exit(rsltCode);
 		}
-		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] = '\0')
+		if ((customStringCompare(curCmd, "\n") == 0) || curCmd[0] == '\0')
 		{
 			free(curCmd);
 			free(curCmdDup);
@@ -71,8 +73,6 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 
 void handleInterrupt(int signo __attribute__((unused)))
 {
-	char curCmd;
-
 	write(1, "\n", 1);
 	if (curCmd != NULL)
 	{

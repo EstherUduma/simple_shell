@@ -3,25 +3,38 @@
 /**
 * customcheck - checks file access and runs the command
 * @cmd_args: array of commands
-* @error_msg: error message string
-* Return: 0
+* @curCmd: the command to check
+* @error: error message
+* @i: the command count
+* @env: array of environment variables
+* Return: 0 if successful and 1 if not
 */
 
-int customcheck(char **cmd_args, char *error_msg)
+int customcheck(char **cmd_args, char *curCmd, char *error, int i, char **env)
 {
-	if (access(cmd_args[0], X_OK) == 0)
-	{
-		if (fork() == 0)
+	int access_result;
+	pid_t idk;
+	char *m = NULL;
+
+	do {
+		if (curCmd == NULL)
+			m = cmd_args[0];
+		else
+			m = curCmd;
+		access_result = access(m, X_OK);
+		if (access_result == 0)
 		{
-			customcheck(cmd_args, error_msg);
+			idk = fork();
+			if (idk == 0)
+				executeWithExecve(m, cmd_args, env);
+			return (0);
 		}
-		return (0);
-	}
-	else
-	{
-		perror(error_msg);
-		return (1);
-	}
+		else
+		{
+			printError(error, i, m);
+			return (1);
+		}
+	} while (0);
 }
 
 /**

@@ -13,11 +13,12 @@
 #include <ctype.h>
 
 #define BUFFER_SIZE 1024
-#define MAX_ARGS 100
+#define MAX_ARGS 1024
 
 extern char **environ;
 extern struct Node *myEnvironmentList;
-
+static char *curCmd __attribute__((unused));
+extern int ex_code;
 /**
 * struct Node - a custom data structure
 * @str: a pointer to a character string
@@ -49,7 +50,7 @@ int customStringCopy(char *destination, const char *source);
 int customStringLength(const char *str);
 int customStringCompare(const char *strA, const char *strB);
 char *customGetEnv(const char *name);
-char *custom_strdup(const char *input_str);
+char *custom_strdup(char *input_str);
 char *custom_strcat(char *destination, const char *source);
 int custom_strncmp(const char *s1, const char *s2, size_t n);
 char *customWhich(const char *command);
@@ -70,8 +71,6 @@ int alias_command(char *argv[], int numArgs);
 void displayPrompt(void);
 void processUserInput(void);
 void processCommand(char *cmd);
-int ex_code = 0;
-struct Node *new_node(char *str);
 void add_node(struct Node **head, struct Node *newNode);
 void remEnvVar(struct Node **head, const char *name);
 void setEnvVar(struct Node **head, const char *name, const char *value);
@@ -81,16 +80,16 @@ int customSetEnv(const char *name, const char *vaue, int overwrite);
 char *customFindChar(const char *source, int target);
 int customExit(char *status, int cmdCount, char *shellName, char **cmdArgs);
 void DisplayAllAliases(Alias *aliases);
-int customcheck(char **cmd_args, char *error_msg);
+int customcheck(char **cmd_args, char *curCmd, char *error, int i, char **env);
 int _putchar(char character);
 void printEnvironment(struct Node *head);
 void freeEnvironmentList(struct Node *head);
 int dispayEnvironment(void);
 int setEnvironmentVariable(const char *name, const char *value);
 int unsetEnvironmentVariable(const char *name);
-void executeCommand(char **arguments);
+void executeCommand(char **args, char *argv, int i);
 void executeWithExecve(char *command, char **p, char **env);
-void printError(char *error, char *command);
+void printError(char *error, int i, char *command);
 void printString(char *str);
 void printNumber(int n);
 void handleSegmentationFault(int signalNumber);
@@ -107,5 +106,27 @@ int exitShell(char *argument);
 int customAtoi(char *str);
 int customIsNumber(const char *str);
 void ifEmpty(struct Node **head, char *newEnvVar, size_t newVarLength);
-
+void customStrTok(char *command, char *argv[MAX_ARGS]);
+struct Node *new_node(char *str) __attribute__((unused));
+/**static struct Node *new_node(char *str)
+*{
+*	struct Node *node = malloc(sizeof(struct Node));
+*
+*	if (node == NULL)
+*		return (NULL);
+*	node->str = str;
+*	node->next = NULL;
+*	return (node);
+*}
+*static void add_node(struct Node **head, struct Node *node) __attribute__((unused));
+*static void add_node(struct Node **head, struct Node *node)
+*{
+*	if (*head == NULL)
+*		return (NULL);
+*	node->str = str;
+*	node->next = NULL;
+*	return (node);
+*}
+*/
+int displayEnvironment(void);
 #endif
