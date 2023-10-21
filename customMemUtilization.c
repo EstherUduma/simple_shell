@@ -111,7 +111,7 @@ char *input)
 		free(aux);
 	}
 	free(slashInput);
-	free(slashComand);
+	free(slashCommand);
 	return (input);
 }
 
