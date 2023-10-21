@@ -50,5 +50,11 @@ int countCharOccurrences(char *buffer, char c);
 char *replaceChar(char *buffer, char oldChar, char newChar);
 void ctrlC(__attribute__((unused)) int a);
 void printError(char *programName, char *input, int errorNum);
+int main(__attribute__((unused)) int ac, char **av, char **env);
+int startShell(list_t *path, char **env, char *program_name, int node);
+int executeBuffer(char *buffer, list_t *path, char **env, char *program_name);
+int executeCommand(char *newBuffer, list_t *path, char **env, int final, char
+*program_name);
+int executeFork(char **input, char *program_name);
 
 #endif

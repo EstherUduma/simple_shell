@@ -15,11 +15,11 @@ int main(__attribute__((unused)) int ac, char **av, char **env)
 	int aux, node = 0;
 
 	signal(SIGINT, SIG_IGN);
-	path = listPath(env);
+	path = createPathList(env);
 	if (isatty(0))
 		node = 1;
-	aux = startShell(path, env, program_name, mode);
-	freeList(path)
+	aux = startShell(path, env, program_name, node);
+	freePathList(path);
 	return (aux);
 }
 
@@ -127,7 +127,7 @@ int executeCommand(char *newBuffer, list_t *path, char **env, int final, char
 	while (current < final)
 	{
 		tmpBuffer = customStrDup(newBuffer);
-		currentBuuffer = strtok(tmpBuffer, "\n");
+		currentBuffer = strtok(tmpBuffer, "\n");
 		for (i = 0; i < current; i++)
 			currentBuffer = strtok(NULL, "\n");
 		input = createArgv(currentBuffer, &path);
