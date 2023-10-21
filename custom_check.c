@@ -16,7 +16,7 @@ int customcheck(char **cmd_args, char *curCmd, char *error, int i, char **env)
 	char *m = NULL;
 
 	do {
-		m = (curCmd == 	NULL) ? cmd_args[0] : curCmd;
+		m = (curCmd == NULL) ? cmd_args[0] : curCmd;
 		if (access(m, X_OK) == 0)
 		{
 			idk = fork();

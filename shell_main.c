@@ -17,6 +17,7 @@ void handleSegfault(int signo __attribute__((unused)))
 * Return: 0 on success
 */
 
+int main(int aCnt, char **aVct);
 int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 {
 	char *curCmdDup, *desDup[MAX_ARGS], *desMain[MAX_ARGS];
