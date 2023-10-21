@@ -21,7 +21,7 @@ int customcheck(char **cmd_args, char *curCmd, char *error, int i, char **env)
 		{
 			idk = fork();
 			if (idk == 0)
-				executeWithExecve(m, cmd_args, env);
+				execve(m, cmd_args, env);
 			return (0);
 		}
 		else

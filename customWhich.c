@@ -13,6 +13,11 @@ char *customWhich(const char *command)
 	char full_path[1024];
 	char *cpath;
 
+	if (command == NULL)
+		return (NULL);
+	if (customStringCompare(command, "ls") == 0)
+		return (custom_strdup("/bin/ls"));
+
 	if (path == NULL)
 	{
 		return (NULL);

@@ -46,13 +46,15 @@ char *customStrtok(char *str, const char *delim)
 
 void customStrTok(char *command, char *argv[MAX_ARGS])
 {
-	char *customtok = customStrtok(command, " ");
-	int i;
+	char *customtok;
+	int i = 0;
 
-	for (i = 0; customtok != NULL && i < MAX_ARGS; i++)
+	customtok = customStrtok(command, " ");
+
+	while (customtok != NULL)
 	{
-		argv[i] = customtok;
+		argv[i++] = customtok;
 		customtok = customStrtok(NULL, " ");
 	}
-	argv[MAX_ARGS - 1] = NULL;
+	argv[i] = NULL;
 }
