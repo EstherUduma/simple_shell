@@ -16,12 +16,11 @@ int ex_code = 0;
 * @aVct: an array of command line arguments
 * Return: 0 on success
 */
-
 int main(int aCnt, char **aVct);
 int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 {
 	char *curCmdDup, *desDup[MAX_ARGS], *desMain[MAX_ARGS];
-	int should_continue = 1, i = 0, rsltCode, ex_code = 0;
+	int should_continue = 1, i = 0, rsltCode;
 
 	signal(SIGSEGV, handleSegfault);
 	while (should_continue)
@@ -53,11 +52,20 @@ int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 				continue;
 			exit(rsltCode);
 		}
-		if (procShellCmd(desMain) == 0)
+		else if (customStringCompare(desMain[0], "/bin/ls") == 0)
 		{
+			executeCommand(desMain, aVct[0], i);
 		}
 		else
-			executeCommand(desMain, aVct[0], i);
+		{
+			if (procShellCmd(desMain) == 0)
+			{
+			}
+			else
+			{
+				executeCommand(desMain, aVct[0], i);
+			}
+		}
 		free(curCmd);
 		free(curCmdDup);
 	}

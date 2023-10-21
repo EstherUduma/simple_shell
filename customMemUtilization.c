@@ -1,120 +1,159 @@
-#include "shell.h"
-#include <stdlib.h>
+#include "EstherAnnUduma.h"
 
 /**
-* custom_memcpy - this copies memory
-* @dst: pointer to the destination memory
-* @src: pointer to the source memory
-* @n: number of bytes to copy
-* Return: dst
+* createArgv - converts input_buffer into argument vectors
+* @inputBuffer: input buffer to be processed
+* @pathList: pointer to the path dir list
+* Return: a pointer to the new Argv
 */
 
-void *custom_memcpy(void *dst, const void *src, size_t n)
+char **createArgv(char *inputBuffer, list_t **pathList)
 {
-	char *dest = dst;
-	const char *source = src;
-	size_t i;
+	int i = 0, ac = 0, argc = 1;
+	char *currentString, *strToPut, *newInput, **argv;
 
-	for (i = 0; i < n; i++)
+	newInput = getPath(inputBuffer, pathList);
+
+	while (newInput[i])
 	{
-		dest[i] = source[i];
+		if (newInput[i] == ' ' && (newInput[i + 1] && (newInput[i + 1]
+			!= ' ' && newInput[i + 1] != '\n')))
+			argc += 1;
+		i++;
 	}
-
-	return (dst);
-}
-
-/**
-* custom_realloc - this reallocates the memory
-* @ptr: pointer to the old memory block
-* @size: new size for the memory block
-* Return: New memory location
-*/
-
-void *custom_realloc(void *ptr, size_t size)
-{
-	void *new_ptr = malloc(size);
-
-	if (size == 0)
+	argv = malloc(sizeof(char *) * (argc + 1));
+	if (argv == NULL)
 	{
-		free(ptr);
+		write(STDOUT_FILENO, "MALLOC ERROR\n", 14);
 		return (NULL);
 	}
-
-	if (new_ptr != NULL && ptr != NULL)
+	currentString = strtok(newInput, "\n");
+	currentString = strtok(currentString, " ");
+	ac = 0;
+	while (ac < (argc + 1))
 	{
-		custom_memcpy(new_ptr, ptr, size);
-		free(ptr);
+		strToPut = customStrDup(currentString);
+		argv[ac] = strToPut;
+		currentString = strtok(NULL, " ");
+		ac++;
 	}
-
-	return (new_ptr);
+	free(newInput);
+	return (argv);
 }
 
 /**
-* custom_strdup - this duplicates a string
-* @input_str: this is the input string to duplicate
-* Return: the new string
+* getPath - obtain the directory path where the command is executable
+* @buffer: entire command
+* @pathList: pointer
+* Return: dir with concatenated input buffer
 */
 
-char *custom_strdup(char *input_str)
+char *getPath(char *buffer, list_t **pathList)
 {
-	char *new_str;
+	char *input, *aux, *command = NULL;
+	char *slashCommand, *slashInput, *inputBuffer;
+	struct stat status;
+	list_t *listPointer = *pathList;
 
-	if (input_str == NULL)
+	inputBuffer = cleanSpaces(buffer);
+	input = customStrDup(inputBuffer);
+	free(inputBuffer);
+
+	aux = customStrDup(input);
+	command = strtok(aux, " ");
+	if (command == NULL)
+		command = aux;
+	else
 	{
-		return (NULL);
-	}
-
-	new_str = malloc(customStringLength(input_str) + 1);
-
-	if (new_str != NULL)
-	{
-		customStringCopy(new_str, input_str);
-	}
-
-	return (new_str);
-}
-
-/**
-* custom_strcat - this concatenates two strings
-* @destination: the destination string to append to
-* @source: the source string to append to the destination
-* Return: a pointer ti the concatenated string
-*/
-
-char *custom_strcat(char *destination, const char *source)
-{
-	char *p = destination + customStringLength(destination);
-
-	if (destination == NULL || source == NULL)
-		return (destination);
-
-	while (*source != '\0')
-	{
-		*p++ = *source++;
-	}
-	*p = '\0';
-
-	return (destination);
-}
-
-/**
-* customFindChar - this finds a character in a string
-* @source: the string to search
-* @target: the character to find
-* Return: pointer to the character's position or NULL
-*/
-
-char *customFindChar(const char *source, int target)
-{
-	char *result = (char *)source;
-
-	while (*result != '\0')
-	{
-		if (*result == target)
+		if (stat(command, &status) == 0)
 		{
-			return (result);
+			free(aux);
+			return (input);
 		}
-		result++;
+		else if (checkBuiltin(command) == 0)
+		{
+			free(aux);
+			return (input);
+		}
 	}
-	return (NULL);
+	slashCommand = customStrConcat("/", command);
+	slashInput = customStrConcat("/", input);
+	free(aux);
+	return (auxGethPath(listPointer, slashCommand, slashInput, input));
+}
+
+/**
+* auxGethPath - aux function
+* @listPointer: pointer to the dir path ist
+* @slashCommand: aux string
+* @slashInput: aux string
+* @input: input
+* Return: dir with concat input
+*/
+
+char *auxGetPath(list_t *listPointer, char *slashCommand, char *slashInput,
+char *input)
+{
+	char *aux;
+	struct stat status;
+
+	for (; listPointer; listPointer = listPointer->next)
+	{
+		aux = customStrConcat(listPointer->dir, slashCommand);
+		if (stat(aux, &status) == 0)
+		{
+			aux = customStrConcat(listPointer->dir, slashInput);
+			free(input);
+			free(slashInput);
+			free(slashCommand);
+			return (aux);
+		}
+		free(aux);
+	}
+	free(slashInput);
+	free(slshComand);
+	return (input);
+}
+
+/**
+* cleanSpaces - removes white spaces
+* @buffer: buffer to be cleaned
+* Return: a buffer without spaces
+*/
+
+char *cleanSpaces(char *buffer)
+{
+	int len, firstCharPosition = 0;
+	char *newBuffer, *trueBuffer;
+
+	newBuffer = customStrDup(buffer);
+
+	if (newBuffer[0] != ' ')
+		return (newBuffer);
+	while (newBuffer[firstCharPosition] == ' ')
+		firstCharPosition++;
+	len = customStrLength(newBuffer + firstCharPosition);
+	trueBuffer = malloc(sizeof(char) * (len + 1));
+	if (trueBuffer == NULL)
+	{
+		free(newBuffer);
+		return (NULL);
+	}
+	customStrCopy(trueBuffer, newBuffer + firstCharPosition);
+	free(newBuffer);
+	return (trueBuffer);
+}
+
+/**
+* freeArgv - free memory
+* @argv: arg vector
+*/
+
+void freeArgv(char **argv)
+{
+	int i = 0;
+
+	for (i = 0; argv[i] != NULL; i++)
+		free(argv[i]);
+	free(argv);
 }

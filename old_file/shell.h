@@ -42,7 +42,7 @@ typedef struct Alias
 	const char *aliasCmd;
 	struct Alias *next;
 } Alias;
-
+void handleSegfault(int signo);
 char *customGetLine(char **userInput, size_t *bufferSize, FILE *stream);
 char *customStrtok(const char *str, const char *delim);
 void *custom_realloc(void *ptr, size_t size);

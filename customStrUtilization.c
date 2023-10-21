@@ -1,80 +1,114 @@
 #include "shell.h"
 
 /**
-* customStringCompare - this compares two strings
-* @strA: the first string to be compared
-* @strB: the second string to be compated
-* Return: 0 if equal or otherwise if not
+* customStrLength - returns the length of a string
+* @str: string
+* Return: string length
 */
 
-int customStringCompare(const char *strA, const char *strB)
+int customStrLength(const char *str)
 {
-	while (*strA && (*strA == *strB))
-	{
-		strA++;
-		strB++;
-	}
+	int len = 0;
 
-	return (*(unsigned char *)strA - *(unsigned char *)strB);
+	if (s == NULL)
+		return (0);
+	do {
+		len++;
+	} while (str[len] != '\0');
+	return (len);
 }
 
 /**
-* customStringLength - the length of the string
-* @str: the input string
-* Return: the length of the string
+* customStrCopy - copies from source to destination
+* @destination: where it copies to
+* @source: where it copies from
+* Return: destination pointer
 */
 
-int customStringLength(const char *str)
+char *customStrCopy(char *destination, const char *source)
 {
-	int length = 0;
+	int count = 0;
 
-	while (str[length])
-	{
-		length++;
-	}
-
-	return (length);
-}
-
-/**
-* customStringCopy - copies a specified number of characters
-* to a destination
-* @destination: the destination sting
-* @source: the source string
-* Return: The number of characters copied
-*/
-
-int customStringCopy(char *destination, const char *source)
-{
-	int count;
-
-	for (count = 0; source[count] != '\0'; count++)
-	{
+	do {
 		destination[count] = source[count];
-	}
-	destination[count] =  '\0';
-
-	return (count);
+		count++;
+	} while (source[count]);
+	destination[count] = '\0';
+	return (destination);
 }
 
 /**
-* custom_strncmp - this compares 2 strings up to a specified size
-* @s1: string 1
-* @s2: string 2
-* @n: size
-* Return: 0 if equal, +ve if s1 is > and -ve if s2 is >
+* customStrDup - pointer to the new string which is a duplicate
+* @input_str: string to be duplicated
+* Return: pointer to the dupicated string
 */
 
-int custom_strncmp(const char *s1, const char *s2, size_t  n)
+char *customStrDup(const char *input_str)
 {
-	size_t i;
+	char duplicate;
 
-	for (i = 0; i < n; i++)
+	if (input_str == NULL)
 	{
-		if ((s1[i] != s2[i]) || s1[i] == '\0' || s2[i] == '\0')
-		{
-			return (s1[i] - s2[i]);
-		}
+		return;
 	}
-	return (0);
+	else
+	{
+		duplicate = malloc(sizeof(char) * (customStrLength(input_str) + 1));
+		if (duplicate == NULL)
+			return (NULL);
+		return (customStrCopy(duplicate, input_str));
+	}
+}
+
+/**
+* customStringCat - concatenates two strings
+* @destination: destination address
+* @source: source
+* Return: pointer to the destination string
+*/
+
+char *customStringCat(char *destination, const char *source)
+{
+	char *ptr = destination;
+	int count = 0, counter = 0;
+
+	if (source == NULL)
+		return (ptr);
+	while (destination[count] != '\0')
+	{
+		count++;
+	}
+	while (source[counter] != '\0')
+	{
+		destination[count] = source[counter];
+		count++;
+		counter++;
+	}
+	destination[count] = '\0';
+
+	return (ptr);
+}
+
+/**
+* customStrConcat - concatenates 2 strings ton a new mem aaddress
+* @str1: string 1
+* @str2: string 2
+* Return: memory address of the string
+*/
+
+char *customStrConcat(const char *str1, const char *str2)
+{
+	char address;
+
+	if (str1 == NULL || str2 == NULL)
+		return (NULL);
+	address = malloc(customStrLength(str1) + customStrLength(str2) + 1);
+	if (!address)
+	{
+		perror("MALLOC");
+		return (MULL);
+	}
+	customStrCopy(address, str1);
+	customStrCat(address, str2);
+	return (address);
 }

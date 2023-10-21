@@ -14,10 +14,14 @@ void executeCommand(char **args, char *argv, int i)
 
 	customStringCopy(error, argv);
 	ex_code = 0;
+	if (args[0] == NULL)
+		return;
 
 	if (args[0][0] == '/')
 	{
 		executeWithExecve(args[0], args, environ);
+		if (customcheck(args, NULL, error, i, environ))
+			return;
 	}
 	else
 	{

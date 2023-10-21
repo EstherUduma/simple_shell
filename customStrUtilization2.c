@@ -1,102 +1,97 @@
 #include "shell.h"
 
 /**
-* trimTrailingSpaces - this function removes trailing spaces from a string
-* @inputStr: the input string to trim
+* removeComments - removes comments from a buffer
+* @buffer: buffer to be cleaned
+* Return: pointer to the new buffer without comments
 */
 
-void trimTrailingSpaces(char *inputStr)
+char *removeComments(char *buffer)
 {
-	size_t length = customStringLength(inputStr);
+	char *cleanBuffer = malloc(sizeof(char) * (customStrLength(buffer) + 1))
+	int i;
 
-	while (length > 0 && inputStr[length - 1] == ' ')
+	if (!cleanBuffer)
 	{
-		inputStr[--length] = '\0';
+		perror("MALLOC");
+		return (NULL);
 	}
+	for (i = 0; buffer[i] && buffer[i] != '#'; i++)
+		cleanBuffer[i] = buffer[i];
+	cleanBuffer[i] = '\0';
+
+	return (cleanBuffer);
 }
 
 /**
-* splitIntoArgs - tokenizes a command into arguments
-* @inputCommand: the command to be tokenize
-* @args: An array to store the resulting arguments
+* isNotEmpty - checks if  buffer contains any non-space character
+* @inputBuffer: command line to be executed
+* Return: 0 if there are spaces and -1 if not
 */
 
-void splitIntoArgs(char *inputCommand, char *args[MAX_ARGS])
+int isNotEmpty(char *inputBuffer)
 {
-	int argIndex = 0;
-	char *token = customStrtok(inputCommand, " ");
+	int i;
 
-	while (token != NULL)
+	for (i = 0; inputBuffer[i] && inputBuffer[i] == ' '; i++)
 	{
-		args[argIndex++] = token;
-		token = customStrtok(NULL, " ");
 	}
-	args[argIndex] = NULL;
+	return ((inputBuffer[i] && inputBuffer[i] != '\n') ? -1 : 0);
 }
 
 /**
-* countArguments - counts the number of arguments in an array
-* @args: the array if argument
-* Return: number of arguments
+* areEqualStrings - compares two strings
+* @str1: string1
+* @str2: string2
+* Return: 0 if str1 == str2, -1 if str1 != str2
 */
 
-int countArguments(char *args[])
+int areEqualStrings(char *str1, char *str2)
 {
-	int argCount = 0;
+	int 1;
 
-	while (args[argCount] != NULL)
+	for (i = 0; str1[i] && str2[i] && str1[i] == str2[i]; i++)
 	{
-		argCount++;
 	}
-	return (argCount);
+	return ((str[i] == str2[i]) ? 0 : -1);
 }
 
 /**
-* customHasEqualSign - checks if string contains an equal sign
-* @text: the string to check
-* Return: 1 if equal and 0 if not
+* countCharOccurrences - count the number of times c appears
+* @buffer: buffer to check
+* @c: character to count
+* Return: the count of c occurences + 1
 */
 
-int customHasEqualSign(char *text)
+int countCharOccurrences(char *buffer, char c)
 {
-	while (*text != '\0')
+	int counter = 0, i;
+
+	for (i = 0; buffer[i]; i++)
 	{
-		if (*text == '=')
-		{
-			return (1);
-		}
-		text++;
+		if (buffer[i]; c)
+			counter++;
 	}
-	return (0);
+	return (counter + 1);
 }
 
 /**
-* customExit - this function exits with a status code
-* @status: status code to exit with
-* @cmdCount: count of command
-* @shellName: name of the shell
-* @cmdArgs: string of input command arguments
-* Return: exit code
+* replaceChar - replace all occurences of old char
+* @buffer: input buffer
+* @oldChar: character to be replaced
+* @newChar: character to replace old char
+* Return: the modified buffer
 */
 
-int customExit(char *status, int cmdCount, char *shellName, char **cmdArgs)
+char *replaceChar(char *buffer, char oldChar, char newChar)
 {
-	int exitCode = 0;
-	int charIndex = 0;
+	char *newBuffer = customStrDup(buffer);
+	int i;
 
-	if (status != NULL)
+	for (i = 0; newBuffer[i]; i++)
 	{
-		while (status[charIndex])
-		{
-			if (!(status[charIndex] >= '0' && status[charIndex] <= '9'))
-			{
-				printShellErr(shellName, cmdCount, cmdArgs[0], cmdArgs[1]);
-				exitCode = 2;
-				return (500);
-			}
-			charIndex++;
-		}
-		exitCode = customAtoi(status);
+		if (newBuffer[i] == oldChar)
+			newBuffer[i] newChar;
 	}
-	return (exitCode);
+	return (newBuffer);
 }
