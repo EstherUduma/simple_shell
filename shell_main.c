@@ -10,19 +10,17 @@ void handleSegfault(int signo __attribute__((unused)))
 	exit(1);
 }
 
-int ex_code = 0;
-
 /**
 * main - entry point of the program
-* @argCnt: the number of command line arguments
-* @argVct: an array of command line arguments
+* @aCnt: the number of command line arguments
+* @aVct: an array of command line arguments
 * Return: 0 on success
 */
 
 int main(int aCnt __attribute__((unused)), char **aVct __attribute__((unused)))
 {
 	char *curCmdDup, *desDup[MAX_ARGS], *desMain[MAX_ARGS];
-	int should_continue = 1, i = 0, rsltCode;
+	int should_continue = 1, i = 0, rsltCode, ex_code = 0;
 
 	signal(SIGSEGV, handleSegfault);
 	while (should_continue)

@@ -34,6 +34,7 @@ struct Node
 * struct Alias - structure to represent an alias
 * @name: the name of the alias
 * @aliasCmd: the command associated with the the alias
+* @next: next
 */
 typedef struct Alias
 {
@@ -107,6 +108,11 @@ int customAtoi(char *str);
 int customIsNumber(const char *str);
 void ifEmpty(struct Node **head, char *newEnvVar, size_t newVarLength);
 void customStrTok(char *command, char *argv[MAX_ARGS]);
+/**
+* new_node - new node
+* @str: string
+* Return: NUL
+*/
 static struct Node *new_node(char *str) __attribute__((unused));
 static struct Node *new_node(char *str)
 {
@@ -118,7 +124,13 @@ static struct Node *new_node(char *str)
 	node->next = NULL;
 	return (node);
 }
-static void add_node(struct Node **head, struct Node *node) __attribute__((unused));
+/**
+* add_node - add node
+* @head: initia
+* @node: desc
+*/
+static void add_node(struct Node **head, struct Node *node) __attribute__
+((unused));
 static void add_node(struct Node **head, struct Node *node)
 {
 	if (*head == NULL)
@@ -126,6 +138,7 @@ static void add_node(struct Node **head, struct Node *node)
 	else
 	{
 		struct Node *current = *head;
+
 		for (; current->next != NULL ; )
 			current = current->next;
 		current->next = node;

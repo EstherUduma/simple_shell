@@ -71,6 +71,7 @@ void executeWithExecve(char *command, char **p, char **env)
 *  printError - prints error message
 * @error: the error message to print
 * @command: the command associated with the error
+* @i: count
 */
 
 void printError(char *error, int i, char *command)
