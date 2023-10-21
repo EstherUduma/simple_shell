@@ -37,6 +37,6 @@ void printError(char *programName, char *input, int errorNum)
 	if (errorNum == 3)
 	{
 		write(STDOUT_FILENO, programName, customStrLength(programName));
-		write(STDOUT_FILENO, ": 1: internal error allocating memory\n", 38)
+		write(STDOUT_FILENO, ": 1: internal error allocating memory\n", 38);
 	}
 }

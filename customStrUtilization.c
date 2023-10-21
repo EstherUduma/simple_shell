@@ -10,7 +10,7 @@ int customStrLength(const char *str)
 {
 	int len = 0;
 
-	if (s == NULL)
+	if (str == NULL)
 		return (0);
 	do {
 		len++;
@@ -45,11 +45,11 @@ char *customStrCopy(char *destination, const char *source)
 
 char *customStrDup(const char *input_str)
 {
-	char duplicate;
+	char *duplicate;
 
 	if (input_str == NULL)
 	{
-		return;
+		return (NULL);
 	}
 	else
 	{
@@ -98,7 +98,7 @@ char *customStringCat(char *destination, const char *source)
 
 char *customStrConcat(const char *str1, const char *str2)
 {
-	char address;
+	char *address;
 
 	if (str1 == NULL || str2 == NULL)
 		return (NULL);
@@ -106,9 +106,10 @@ char *customStrConcat(const char *str1, const char *str2)
 	if (!address)
 	{
 		perror("MALLOC");
-		return (MULL);
+		return (NULL);
 	}
 	customStrCopy(address, str1);
-	customStrCat(address, str2);
+	customStrConcat(address, str2);
+	
 	return (address);
 }

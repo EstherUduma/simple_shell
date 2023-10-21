@@ -8,7 +8,7 @@
 
 char *removeComments(char *buffer)
 {
-	char *cleanBuffer = malloc(sizeof(char) * (customStrLength(buffer) + 1))
+	char *cleanBuffer = malloc(sizeof(char) * (customStrLength(buffer) + 1));
 	int i;
 
 	if (!cleanBuffer)
@@ -48,12 +48,12 @@ int isNotEmpty(char *inputBuffer)
 
 int areEqualStrings(char *str1, char *str2)
 {
-	int 1;
+	int i;
 
 	for (i = 0; str1[i] && str2[i] && str1[i] == str2[i]; i++)
 	{
 	}
-	return ((str[i] == str2[i]) ? 0 : -1);
+	return ((str1[i] == str2[i]) ? 0 : -1);
 }
 
 /**
@@ -69,7 +69,7 @@ int countCharOccurrences(char *buffer, char c)
 
 	for (i = 0; buffer[i]; i++)
 	{
-		if (buffer[i]; c)
+		if (buffer[i] == c)
 			counter++;
 	}
 	return (counter + 1);
@@ -91,7 +91,7 @@ char *replaceChar(char *buffer, char oldChar, char newChar)
 	for (i = 0; newBuffer[i]; i++)
 	{
 		if (newBuffer[i] == oldChar)
-			newBuffer[i] newChar;
+			newBuffer[i] = newChar;
 	}
 	return (newBuffer);
 }
