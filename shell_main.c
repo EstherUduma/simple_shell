@@ -9,7 +9,7 @@ void handleSegfault(int signo __attribute__((unused)))
 {
 	exit(1);
 }
-
+int ex_code = 0;
 /**
 * main - entry point of the program
 * @aCnt: the number of command line arguments
