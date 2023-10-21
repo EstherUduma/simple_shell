@@ -55,8 +55,60 @@ int checkBuiltin(char *command)
 int runBuiltins(char **input, char **env)
 {
 	char *str;
+	int i;
 
 	if (!areEqualStrings(input[0], "exit"))
 	{
 		freeArgv(input);
 		return (2);
+	}
+	if (!areEqualStrings(input[0], "help"))
+	{
+		printHelp(input);
+		return (1);
+	}
+	if (!areEqualStrings(input[0], "env"))
+	{
+		for (i = 0; env[i]; i++)
+		{
+			str = env[i];
+			write(STDOUT_FILENO, str, customStringLength(str));
+			write(STDOUT_FILENO, "\n", 1);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+/**
+* printHelp - prints help
+* @input: command input
+*/
+
+void printHelp(char **input)
+{
+	char *str;
+
+	if (input[1] != NULL)
+	{
+		if (!areEqualStrings(input[1], "help"))
+		{
+			str = "help: help [pattern ...]\n";
+			write(STDOUT_FILENO, str, customStrLength(str));
+			str = "\tDisplays brief summaries of built in comands.\n";
+			write(STDOUT_FILENO, str, customStrLength(str));
+		}
+		else if (!areEqualStrings(input[1], "exit"))
+		{
+			str = "exit: exit\n";
+			write(STDOUT_FILENO, str, customStrLength(str));
+			str = "\tExit the shell,\n";
+			write(STDOUT_FILENO, str, customStrLength(str));
+		}
+	}
+	else
+	{
+		str = "These shell commands are defined internally.\n";
+		write(STDOUT_FILENO, str, customStrLength(str));
+	}
+}
