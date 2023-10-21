@@ -8,7 +8,7 @@
 list_t *createPathList(char **env)
 {
 	list_t *pathList = NULL;
-	char **ennvironCopy;
+	char **environCopy;
 	int length, i;
 
 	length = 0;
@@ -24,7 +24,7 @@ list_t *createPathList(char **env)
 	while (env[i])
 	{
 		environCopy[i] = customStrDup(env[i]);
-		i++
+		i++;
 	}
 	pathList = buildPathList(environCopy);
 	i = 0;
@@ -77,12 +77,12 @@ list_t *buildPathList(char **environ)
 			dir = customStrDup(aux);
 			addPath(&pathList, dir);
 			temp = temp->next;
-			aux = strtok(NUL, ":");
+			aux = strtok(NULL, ":");
 		}
 	}
 	else
 		perror("ERROR: varValue NULL\n");
-		return (pathList);
+	return (pathList);
 }
 
 /**
@@ -100,7 +100,7 @@ list_t *addPath(list_t **pathList, char *dir)
 	if (newNode == NULL)
 	{
 		perror("ERROR: unable to allocate memory\n");
-		return (NUL);
+		return (NULL);
 	}
 	newNode->dir = dir;
 	newNode->next = NULL;
@@ -137,6 +137,6 @@ void freePathList(list_t *pathList)
 			nextNode = nextNode->next;
 		}
 		free(currentNode->dir);
-		free(CurrentNode);
+		free(currentNode);
 	}
 }

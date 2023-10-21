@@ -79,11 +79,11 @@ char *getPath(char *buffer, list_t **pathList)
 	slashCommand = customStrConcat("/", command);
 	slashInput = customStrConcat("/", input);
 	free(aux);
-	return (auxGethPath(listPointer, slashCommand, slashInput, input));
+	return (auxGetPath(listPointer, slashCommand, slashInput, input));
 }
 
 /**
-* auxGethPath - aux function
+* auxGetPath - aux function
 * @listPointer: pointer to the dir path ist
 * @slashCommand: aux string
 * @slashInput: aux string
@@ -111,7 +111,7 @@ char *input)
 		free(aux);
 	}
 	free(slashInput);
-	free(slshComand);
+	free(slashComand);
 	return (input);
 }
 

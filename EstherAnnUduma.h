@@ -1,10 +1,10 @@
-#ifndef ESTHERANNUDUMA_H
-#define ESTHERANNUDUMA_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <unustd.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
@@ -50,3 +50,5 @@ int countCharOccurrences(char *buffer, char c);
 char *replaceChar(char *buffer, char oldChar, char newChar);
 void ctrlC(__attribute__((unused)) int a);
 void printError(char *programName, char *input, int errorNum);
+
+#endif

@@ -19,7 +19,7 @@ int checkSyntax(char *buffer)
 		}
 		else if (buffer[i] == ';' && flag == 0)
 		{
-			fag = 1;
+			flag = 1;
 		}
 		else if (buffer[i] == ';' && buffer[i] != ' ' && flag == 1)
 		{
@@ -72,7 +72,7 @@ int runBuiltins(char **input, char **env)
 		for (i = 0; env[i]; i++)
 		{
 			str = env[i];
-			write(STDOUT_FILENO, str, customStringLength(str));
+			write(STDOUT_FILENO, str, customStrLength(str));
 			write(STDOUT_FILENO, "\n", 1);
 		}
 		return (1);
